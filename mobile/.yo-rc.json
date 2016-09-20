@@ -1,0 +1,21 @@
+{
+  "generator-m-ionic": {
+    "answers": {
+      "appName": "wirpl",
+      "appId": "com.wirpl",
+      "ionicCss": true,
+      "bowerPackages": [
+        "localforage#~1.4.0"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "plugins": [
+        "cordova-plugin-device"
+      ],
+      "appModule": "wirpl",
+      "ecosystems": []
+    }
+  }
+}

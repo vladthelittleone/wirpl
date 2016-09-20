@@ -1,0 +1,65 @@
+<<<<<<< HEAD
+## Android Studio and Intellij and Android in general
+android/libs/armeabi/
+android/libs/armeabi-v7a/
+android/libs/x86/
+android/gen/
+.idea/
+*.ipr
+*.iws
+*.iml
+out/
+build/
+node_modules/
+com_crashlytics_export_strings.xml
+public/javascripts/bundle.js
+
+## OS Specific
+.DS_Store
+
+## Node and web
+
+mobile/node_modules
+*/dist
+*/.tmp
+*/.sass-cache
+*/bower_components
+
+## Common ignore
+*~
+#=======
+## temp files
+#.DS_Store
+#.tmp
+#.sass-cache
+#
+## npm & bower
+#/node_modules/
+#/app/bower_components/
+#
+## custom gulp settings
+#/gulp/.gulp_settings.json
+#
+## ionic fonts
+#/app/main/assets/fonts/ionicons.*
+#
+## cordova
+#/platforms/
+#/plugins/
+#/res/*/current/
+#
+## build folder
+#/www/**
+#
+## IDE
+## sublime
+#*.sublime-project
+#*.sublime-workspace
+#
+## vscode
+#/.vscode/
+#
+## webstorm
+#/.idea/workspace.xml
+#/.idea/libraries
+#>>>>>>> 7a6f9d1a2406af644a410fb9ff98ae2b7f01228d
