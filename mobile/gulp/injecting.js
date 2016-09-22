@@ -8,15 +8,17 @@ var $ = require('gulp-load-plugins')();
 // modules
 var wiredep = require('wiredep');
 var mainBowerFiles = require('main-bower-files');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
 
 // inject app/**/*.js, bower components, css into index.html
 // inject environment variables into config.js constant
-gulp.task('inject-all', ['styles', 'wiredep', 'bower-fonts', 'environment', 'build-vars'], function () {
+gulp.task('inject-all', ['styles', 'wiredep', 'bower-fonts', 'environment', 'build-vars', 'browserify'], function () {
 
   return gulp.src('app/index.html')
     .pipe(
       $.inject( // app/**/*.js files
-        gulp.src(paths.jsFiles)
+        gulp.src(paths.bundleJsFiles)
           .pipe($.plumber()) // use plumber so watch can start despite js errors
           .pipe($.naturalSort())
           .pipe($.angularFilesort()),
@@ -30,6 +32,14 @@ gulp.task('inject-all', ['styles', 'wiredep', 'bower-fonts', 'environment', 'bui
           relative: true,
         }))
     .pipe(gulp.dest('app'));
+});
+
+gulp.task('browserify', function() {
+    return browserify('app/app.js')
+        .bundle()
+        // Передаем имя файла, который получим на выходе, vinyl-source-stream
+        .pipe(source('bundle.js'))
+        .pipe(gulp.dest('app'));
 });
 
 // build styles to tmp
