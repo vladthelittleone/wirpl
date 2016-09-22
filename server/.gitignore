@@ -1,0 +1,34 @@
+node_modules
+coverage
+## Android Studio and Intellij and Android in general
+android/libs/armeabi/
+android/libs/armeabi-v7a/
+android/libs/x86/
+android/gen/
+.idea/
+*.ipr
+*.iws
+*.iml
+out/
+build/
+com_crashlytics_export_strings.xml
+public/javascripts/bundle.js
+
+## OS Specific
+.DS_Store
+
+## Phaser
+
+*.log
+*.heapsnapshot
+
+## AngularJS
+
+*/node_modules
+*/dist
+*/.tmp
+*/.sass-cache
+*/bower_components
+
+## Common ignore
+*~
