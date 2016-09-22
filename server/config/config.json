@@ -1,0 +1,33 @@
+{
+	"port": 3000,
+	"database": {
+		"uri":  "mongodb://localhost/spacecraft",
+		"options": {
+			"server": {
+				"socketOptions": {
+					"keepAlive": 1
+				}
+			}
+		},
+		"debug": false
+	},
+	"session": {
+		"secret": "HustleHardCode",
+		"key": "sid",
+		"resave": true,
+		"saveUninitialized": true,
+		"cookie": {
+			"path": "/",
+			"httpOnly": true,
+			"maxAge": null
+		}
+	},
+	"vkStrategySettings": {
+		"clientID":     "5624932",
+		"clientSecret": "7SItUJV1h4mDSC0PiXkc",
+		"callbackURL":  "http://localhost:3000/login/vk/callback",
+		"apiVersion": "5.17",
+		"scope": ["email"]
+	},
+	"maxStatisticsCount": 50
+}
