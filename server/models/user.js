@@ -35,40 +35,42 @@ function findOrCreateVKUser (vkId, email, callback) {
 
 	async.waterfall([
 
-			(callback) => {
+		(callback) => {
 
-				User.findOne({vkId: vkId}, callback);
+			User.findOne({vkId: vkId}, callback);
 
-			},
-			(user, callback) => {
+		},
+		(user, callback) => {
 
-				if (!user) {
+			if (!user) {
 
-					var newbie = new User ({
+				var newbie = new User ({
 
-						email: email,
-						vkId: vkId,
-						// Вот тут хз как быть, вроде бы в это поле ничего не надо писать
-						// но тогда поля отвечающие за хранение хэшированого пароля
-						// и соли нужно сделать не обязательными, что тоже не очень то и хорошо
-						password: email,
-						// и не понятно как быть с этим параметром
-						// ибо его задание через вк тот еще геммор
-						// к томуже у вк юзера может быть не привязанно мыло
-						// в общем это стоит обсудить
-						isSubscribeOnEmail: false
+					email: email,
+					vkId: vkId,
 
-					});
+					// Вот тут хз как быть, вроде бы в это поле ничего не надо писать
+					// но тогда поля отвечающие за хранение хэшированого пароля
+					// и соли нужно сделать не обязательными, что тоже не очень то и хорошо
+					password: email,
 
-					newbie.save((err) => {
+					// и не понятно как быть с этим параметром
+					// ибо его задание через вк тот еще геммор
+					// к томуже у вк юзера может быть не привязанно мыло
+					// в общем это стоит обсудить
+					isSubscribeOnEmail: false
 
-						callback(err, newbie, true);
+				});
 
-					});
-				}
+				newbie.save((err) => {
 
-				callback(null, user, false);
+					callback(err, newbie, true);
+
+				});
 			}
+
+			callback(null, user, false);
+		}
 
 	], callback);
 

@@ -3,7 +3,8 @@
 const login = require('./login');
 
 module.exports = function (app) {
-  // Мидлвер
-  app.use ('/login', login);
-  
+
+	// Мидлвер
+	app.use('/login', login);
+
 };
