@@ -23,8 +23,8 @@
 		}
 	},
 	"vkStrategySettings": {
-		"clientID":     "5624932",
-		"clientSecret": "7SItUJV1h4mDSC0PiXkc",
+		"clientID":     "5643384",
+		"clientSecret": "ADL6MiBqWXJdtgBcqVlS",
 		"callbackURL":  "http://localhost:3000/login/vk/callback",
 		"apiVersion": "5.17",
 		"scope": ["email"]

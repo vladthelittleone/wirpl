@@ -10,11 +10,15 @@ module.exports = router;
 
 router.get('/vk', passport.authenticate('vk-login'));
 
-router.get('/vk/callback', passport.authenticate('vk-login', {
+router.get('/vk/callback', passport.authenticate('vk-login'), (req, res, next) => {
 
-	successRedirect: '/'
+	res.send({
 
-}));
+		msg: "Auth"
+
+	});
+
+});
 
 /**
  * проверяем авторизован ли пользователь

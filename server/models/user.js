@@ -1,7 +1,7 @@
 'use strict';
 
 var async = require('async');
-var mongoose = require('utils/mongoose');
+var mongoose = require('../utils/mongoose');
 
 var Schema = mongoose.Schema;
 
@@ -47,29 +47,18 @@ function findOrCreateVKUser (vkId, email, callback) {
 				var newbie = new User ({
 
 					email: email,
-					vkId: vkId,
-
-					// Вот тут хз как быть, вроде бы в это поле ничего не надо писать
-					// но тогда поля отвечающие за хранение хэшированого пароля
-					// и соли нужно сделать не обязательными, что тоже не очень то и хорошо
-					password: email,
-
-					// и не понятно как быть с этим параметром
-					// ибо его задание через вк тот еще геммор
-					// к томуже у вк юзера может быть не привязанно мыло
-					// в общем это стоит обсудить
-					isSubscribeOnEmail: false
+					vkId: vkId
 
 				});
 
 				newbie.save((err) => {
 
-					callback(err, newbie, true);
+					callback(err, newbie);
 
 				});
 			}
 
-			callback(null, user, false);
+			callback(null, user);
 		}
 
 	], callback);

@@ -35,7 +35,7 @@ app.use(session({
 					saveUninitialized: config.get('session:saveUninitialized'),
 					cookie: config.get('session:cookie'),
 					store: new MongoStore({mongooseConnection: mongoose.connection})
-				}));
+}));
 
 // init passportJS
 app.use(passport.initialize());
@@ -68,14 +68,14 @@ if (app.get('env') === 'development') {
 
 	setInterval(function () {
 
-					var heap = process.memoryUsage().heapUsed;
+		var heap = process.memoryUsage().heapUsed;
 
-					maxHeap = maxHeap < heap ? heap : maxHeap;
+		maxHeap = maxHeap < heap ? heap : maxHeap;
 
-					logger.info('Heap size: ' + heap + ', maximum heap size: ' + maxHeap);
+		logger.info('Heap size: ' + heap + ', maximum heap size: ' + maxHeap);
 
-				},
-				10000);
+	},
+	10000);
 
 }
 
