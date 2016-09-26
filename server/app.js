@@ -1,60 +1,82 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+'use strict';
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+const express = require('express');
+const passport = require('passport');
+const path = require('path');
+const httpLogger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 
-var app = express();
+// Наши модули
+const config = require('../server/config/');
+const mongoose = require('./utils/mongoose');
+const logger = require('./utils/log')(module);
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+require('./utils/passport')();
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+const app = express();
+
+var VKStrategy = require('./utils/passport/vk');
+var maxHeap = 0;
+
+app.use(httpLogger('dev'));
+app.use(bodyParser.json()); // Парсер json в потоках
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+// Сторедж для сессии.
+const MongoStore = require('connect-mongo/es5')(session);
+
+app.use(session({
+					secret: config.get('session:secret'), // ABCDE242342342314123421.SHA256
+					key: config.get('session:key'),
+					resave: config.get('session:resave'),
+					saveUninitialized: config.get('session:saveUninitialized'),
+					cookie: config.get('session:cookie'),
+					store: new MongoStore({mongooseConnection: mongoose.connection})
+}));
+
+// init passportJS
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use('vk-login', VKStrategy.login);
+
+require('../server/routes')(app);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.use(function (req, res, next) {
+
+	var err = new Error('На просторах вселенной страница не найдена!');
+	err.status = 404;
+	next(err);
+
 });
 
-// error handlers
+app.use(function (err, req, res, next) {
 
-// development error handler
-// will print stacktrace
+	if (app.get('env') === 'development') {
+
+		logger.error(err);
+
+	}
+
+});
+
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
+
+	setInterval(function () {
+
+		var heap = process.memoryUsage().heapUsed;
+
+		maxHeap = maxHeap < heap ? heap : maxHeap;
+
+		logger.info('Heap size: ' + heap + ', maximum heap size: ' + maxHeap);
+
+	},
+	10000);
+
 }
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
-
 
 module.exports = app;

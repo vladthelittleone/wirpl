@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
+'use strict';
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const login = require('./login');
 
-module.exports = router;
+module.exports = function (app) {
+
+	// Мидлвер
+	app.use('/login', login);
+
+};

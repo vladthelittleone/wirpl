@@ -1,0 +1,33 @@
+{
+	"port": 3000,
+	"database": {
+		"uri":  "mongodb://localhost/wirpl",
+		"options": {
+			"server": {
+				"socketOptions": {
+					"keepAlive": 1
+				}
+			}
+		},
+		"debug": false
+	},
+	"session": {
+		"secret": "HustleHardCode",
+		"key": "sid",
+		"resave": true,
+		"saveUninitialized": true,
+		"cookie": {
+			"path": "/",
+			"httpOnly": true,
+			"maxAge": null
+		}
+	},
+	"vkStrategySettings": {
+		"clientID":     "5643384",
+		"clientSecret": "ADL6MiBqWXJdtgBcqVlS",
+		"callbackURL":  "http://localhost:3000/login/vk/callback",
+		"apiVersion": "5.17",
+		"scope": ["email"]
+	},
+	"maxStatisticsCount": 50
+}

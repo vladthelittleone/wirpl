@@ -5,9 +5,9 @@
  */
 
 var app = require('../app');
-var log = require('utils/log')(module);
+var log = require('../utils/log')(module);
 var http = require('http');
-var config = require('config');
+var config = require('../config');
 
 /**
  * Get port from environment and store in Express.
