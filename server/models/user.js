@@ -5,17 +5,38 @@ var mongoose = require('../utils/mongoose');
 
 var Schema = mongoose.Schema;
 
-var schema = new Schema({
-	email:              {
-		type:     String,
-		unique:   true,
+var schema = new Schema ({
+	email: {
+		type: String,
+		unique: true,
 		required: true
 	},
-	vkId:		        {
-		type:     String
+	vkId: {
+		type: String
 	},
-	created:            {
-		type:    Date,
+	userName: {
+		type: String
+	},
+	sex: {
+		type: Number
+	},
+	photo: {
+		type: String
+	},
+	birthDate: {
+		typ: String
+	},
+	smallPhoto: {
+		type: String
+	},
+	universities: {
+		type: Array
+	},
+	city: {
+		type: String
+	},
+	created: {
+		type: Date,
 		default: Date.now
 	}
 });
@@ -29,7 +50,7 @@ exports.User = mongoose.model('User', schema);
  * если пользователь не найдет функция создает нового пользователя
  * в базе
  */
-function findOrCreateVKUser (vkId, email, callback) {
+function findOrCreateVKUser (email, profile, callback) {
 
 	var User = this;
 
@@ -37,30 +58,41 @@ function findOrCreateVKUser (vkId, email, callback) {
 
 		(callback) => {
 
-			User.findOne({vkId: vkId}, callback);
+			User.findOne({vkId: profile.id}, callback);
 
 		},
 		(user, callback) => {
 
 			if (!user) {
+				
+				var response = profile._json;
 
 				var newbie = new User ({
 
 					email: email,
-					vkId: vkId
+					vkId: profile.id,
+					userName: profile.displayName,
+					sex: response.sex,
+					photo: response.photo_max,
+					smallPhoto: response.photo,
+					universities: response.universities,
+					city: response.city.title,
+					birthDate: response.bdate
 
 				});
 
-				newbie.save((err) => {
+				newbie.save((err, _user) => {
 
-					callback(err, newbie);
+					callback(err, _user)
 
 				});
+
 			}
+			else {
 
-			callback(null, user);
+				callback (null, user);
+			}
 		}
-
 	], callback);
 
 }

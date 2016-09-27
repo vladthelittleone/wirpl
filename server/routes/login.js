@@ -12,11 +12,7 @@ router.get('/vk', passport.authenticate('vk-login'));
 
 router.get('/vk/callback', passport.authenticate('vk-login'), (req, res, next) => {
 
-	res.send({
-
-		msg: "Auth"
-
-	});
+	res.send(req.session.passport.user);
 
 });
 
