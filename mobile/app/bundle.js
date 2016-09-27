@@ -28,7 +28,7 @@ app.run(runBlock);
 function configBlock($urlRouterProvider) {
 
   // Для всех необработанных переходов
-  $urlRouterProvider.otherwise('/main/list');
+  $urlRouterProvider.otherwise('/auth');
 
 }
 
@@ -39,7 +39,7 @@ function runBlock($state) {
 
 }
 
-},{"./main.module":9}],2:[function(require,module,exports){
+},{"./main.module":10}],2:[function(require,module,exports){
 'use strict';
 
 MainConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
@@ -49,10 +49,15 @@ module.exports = MainConfig;
 /**
  * Инициализация состояния результатов пользователя.
  */
-function MainConfig($stateProvider, $urlRouterProvider) {
+function MainConfig($stateProvider) {
 
 	$stateProvider
-	// this state is placed in the <ion-nav-view> in the index.html
+		.state('auth', {
+			url: '/auth',
+			templateUrl: 'main.module/templates/auth.html',
+			controller: 'AuthController'
+		})
+	    // this state is placed in the <ion-nav-view> in the index.html
 		.state('main', {
 			url: '/main',
 			abstract: true,
@@ -132,6 +137,28 @@ var app = angular.module('main.module');
 app.constant('config', require('./config.const'));
 
 },{"./config.const":3}],5:[function(require,module,exports){
+/**
+ * Created by vladthelittleone on 25.09.16.
+ */
+AuthController.$inject = ['$scope', '$state', '$ionicSlideBoxDelegate'];
+
+module.exports = AuthController;
+
+/**
+ * Вьюха авторизации.
+ */
+function AuthController ($scope, $state, $ionicSlideBoxDelegate) {
+
+	// Called each time the slide changes
+	$scope.slideChanged = function (index) {
+
+		$scope.slideIndex = index;
+
+	};
+
+}
+
+},{}],6:[function(require,module,exports){
 'use strict';
 
 DebugController.$inject = ['$log', '$http', '$timeout', 'mainService', 'config', '$cordovaDevice'];
@@ -189,7 +216,7 @@ function DebugController ($log, $http, $timeout, mainService, config, $cordovaDe
 
 }
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * Created by vladthelittleone on 08.06.16.
  *
@@ -199,8 +226,9 @@ function DebugController ($log, $http, $timeout, mainService, config, $cordovaDe
 var app = angular.module('main.module');
 
 app.controller('DebugController', require('./debug.controller'));
+app.controller('AuthController', require('./auth.controller'));
 
-},{"./debug.controller":5}],7:[function(require,module,exports){
+},{"./auth.controller":5,"./debug.controller":6}],8:[function(require,module,exports){
 'use strict';
 
 /**
@@ -210,7 +238,7 @@ app.controller('DebugController', require('./debug.controller'));
  */
 var app = angular.module('main.module');
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 /**
@@ -220,7 +248,7 @@ var app = angular.module('main.module');
  */
 var app = angular.module('main.module');
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var app = angular.module('main.module', [
@@ -241,7 +269,7 @@ require('./constants');
 require('./filters');
 require('./filters');
 
-},{"./config":2,"./constants":4,"./controllers":6,"./directives":7,"./filters":8,"./services":10}],10:[function(require,module,exports){
+},{"./config":2,"./constants":4,"./controllers":7,"./directives":8,"./filters":9,"./services":11}],11:[function(require,module,exports){
 'use strict';
 
 /**
@@ -253,7 +281,7 @@ var app = angular.module('main.module');
 
 app.service('mainService', require('./main.service'));
 
-},{"./main.service":11}],11:[function(require,module,exports){
+},{"./main.service":12}],12:[function(require,module,exports){
 'use strict';
 
 MainService.$inject = ['$log', '$timeout'];

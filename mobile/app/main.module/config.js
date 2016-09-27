@@ -7,10 +7,15 @@ module.exports = MainConfig;
 /**
  * Инициализация состояния результатов пользователя.
  */
-function MainConfig($stateProvider, $urlRouterProvider) {
+function MainConfig($stateProvider) {
 
 	$stateProvider
-	// this state is placed in the <ion-nav-view> in the index.html
+		.state('auth', {
+			url: '/auth',
+			templateUrl: 'main.module/templates/auth.html',
+			controller: 'AuthController'
+		})
+	    // this state is placed in the <ion-nav-view> in the index.html
 		.state('main', {
 			url: '/main',
 			abstract: true,

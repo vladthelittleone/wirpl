@@ -7,3 +7,4 @@
 var app = angular.module('main.module');
 
 app.controller('DebugController', require('./debug.controller'));
+app.controller('AuthController', require('./auth.controller'));

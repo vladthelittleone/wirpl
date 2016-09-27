@@ -12,7 +12,7 @@ gulp.task('linting-throw', ['eslint-throw', 'jsonlint-throw']);
 // check app and test for eslint errors
 var eslint = function (fail) {
   return function () {
-    return gulp.src(paths.jsFiles.concat(paths.karma).concat(paths.protractor))
+    return gulp.src(paths.bundleJsFiles.concat(paths.karma).concat(paths.protractor))
       .pipe($.eslint())
       .pipe($.eslint.format())
       .pipe($.if(fail, $.eslint.failOnError()));
@@ -27,7 +27,7 @@ var jsonlint = function (fail) {
     throw new Error(file.path + '\n' + file.jsonlint.message);
   };
   return function () {
-    return gulp.src(paths.jsonFiles)
+    return gulp.src(paths.bundleJsFiles)
       .pipe($.jsonlint())
       .pipe($.jsonlint.reporter(fail ? failReporter : undefined));
   };

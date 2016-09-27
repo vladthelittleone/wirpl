@@ -27,7 +27,7 @@ app.run(runBlock);
 function configBlock($urlRouterProvider) {
 
   // Для всех необработанных переходов
-  $urlRouterProvider.otherwise('/main/list');
+  $urlRouterProvider.otherwise('/auth');
 
 }
 

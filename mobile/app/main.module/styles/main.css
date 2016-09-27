@@ -1,1 +1,98 @@
+/*
+ * Change ionic standard style
+ */
+body {
+    cursor: url('http://ionicframework.com/img/finger.png'), auto;
+}
 
+.slider {
+    height: 100%;
+}
+
+.slider-slide {
+    padding-top: 80px;
+    color: #000;
+    background-color: #fff;
+    text-align: center;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+}
+
+#list {
+    width: 170px;
+    margin: 30px auto;
+    font-size: 20px;
+}
+
+#list ol {
+    margin-top: 30px;
+}
+
+#list ol li {
+    text-align: left;
+    list-style: decimal;
+    margin: 10px 0;
+}
+
+.button.ng-hide {
+    display: none;
+}
+
+/*
+ * Wirpl styles
+ */
+
+.wirpl-heart {
+    font-size: 10em;
+    margin-top: 30px;
+    color: #b94a4a;
+}
+
+.wirpl-plus {
+    font-size: 10em;
+    margin-top: 30px;
+    color: #63b95f;
+}
+
+.wirpl-shuffle {
+    font-size: 10em;
+    margin-top: 30px;
+    color: #6583b9;
+}
+
+.wirpl-bottom-button {
+    margin-top: 30px;
+}
+
+.wirpl-auth-slides {
+    padding: 30px;
+}
+
+.wirpl-auth-sub-title {
+    padding-top: 30px;
+}
+
+.wirpl-auth-button {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+
+.wirpl-auth-view .slider-pager {
+    bottom: 70px;
+}
+
+.wirpl-auth-view .bar-positive .button {
+    border-color: #6583b9;
+    background-color: #6583b9;
+    color: #fff;
+}
+
+.wirpl-auth-view .bar.bar-positive {
+    border-color: #587bb9;
+    background-color: #6583b9;
+}
+
+.wirpl-auth-view .bar.bar-positive.bar-footer {
+    background-image: linear-gradient(180deg, #6583b9, #6583b9 50%, transparent 50%);
+}

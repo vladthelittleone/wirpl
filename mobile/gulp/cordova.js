@@ -58,7 +58,7 @@ gulp.task('serve-livereload', ['cordova-prepare'], function (done) {
   var bsOptions = {
     logConnections: true,
     open: false,
-    files: ['app', '.tmp'],
+    files: ['app/bundle.js', '.tmp'],
     server: {
       baseDir: ['app', '.tmp'].concat([patcher.wwwPath]),
       // add platform www's for cordova.js
