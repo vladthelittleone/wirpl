@@ -140,14 +140,14 @@ app.constant('config', require('./config.const'));
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-AuthController.$inject = ['$scope', '$state', '$ionicSlideBoxDelegate'];
+AuthController.$inject = ['$scope', '$state', '$ionicSlideBoxDelegate', 'connection'];
 
 module.exports = AuthController;
 
 /**
  * Вьюха авторизации.
  */
-function AuthController ($scope, $state, $ionicSlideBoxDelegate) {
+function AuthController ($scope, $state, $ionicSlideBoxDelegate, connection) {
 
 	// Called each time the slide changes
 	$scope.slideChanged = function (index) {
@@ -155,6 +155,15 @@ function AuthController ($scope, $state, $ionicSlideBoxDelegate) {
 		$scope.slideIndex = index;
 
 	};
+
+	$scope.authenticate = function () {
+
+    connection.authentication(function (result) {
+
+      console.log(result);
+
+    })
+  }
 
 }
 
@@ -269,7 +278,43 @@ require('./constants');
 require('./filters');
 require('./filters');
 
-},{"./config":2,"./constants":4,"./controllers":7,"./directives":8,"./filters":9,"./services":11}],11:[function(require,module,exports){
+},{"./config":2,"./constants":4,"./controllers":7,"./directives":8,"./filters":9,"./services":12}],11:[function(require,module,exports){
+'use strict';
+
+Connection.$inject = ['$http'];
+
+module.exports = Connection;
+
+/**
+ * Ссылки на REST API
+ */
+var links = {
+
+    login:    '/login',
+    vkAuth:   '/vk/callback'
+};
+
+/**
+ * Created by vaimer on 28.09.16.
+ */
+
+function Connection($http) {
+
+  var that = {};
+
+  that.authentication = authentication;
+
+  return that;
+
+
+  function authentication(callback){
+
+    $http.get(links.vkAuth, callback);
+
+  }
+}
+
+},{}],12:[function(require,module,exports){
 'use strict';
 
 /**
@@ -280,8 +325,9 @@ require('./filters');
 var app = angular.module('main.module');
 
 app.service('mainService', require('./main.service'));
+app.service('connection', require('./connection.service'));
 
-},{"./main.service":12}],12:[function(require,module,exports){
+},{"./connection.service":11,"./main.service":13}],13:[function(require,module,exports){
 'use strict';
 
 MainService.$inject = ['$log', '$timeout'];

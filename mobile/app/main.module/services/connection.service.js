@@ -21,7 +21,14 @@ function Connection($http) {
 
   var that = {};
 
+  that.authentication = authentication;
+
   return that;
 
-  function
+
+  function authentication(callback){
+
+    $http.get(links.vkAuth, callback);
+
+  }
 }
