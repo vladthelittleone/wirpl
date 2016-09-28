@@ -24,7 +24,7 @@ router.get('/vk/callback', passport.authenticate('vk-login'), (req, res, next) =
  * проверяем авторизован ли пользователь
  */
 router.get('/check', (req, res, next) => {
-	
+
 	if (!req.isAuthenticated()) {
 
 		return next(new HttpError(401, "Вы не авторизованы"));

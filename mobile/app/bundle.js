@@ -140,19 +140,21 @@ app.constant('config', require('./config.const'));
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-AuthController.$inject = ['$scope', '$state', '$ionicSlideBoxDelegate'];
+AuthController.$inject = ['$scope', '$state', '$ionicSlideBoxDelegate', 'kudagoService'];
 
 module.exports = AuthController;
 
 /**
  * Вьюха авторизации.
  */
-function AuthController ($scope, $state, $ionicSlideBoxDelegate) {
+function AuthController ($scope, $state, $ionicSlideBoxDelegate, kudagoService) {
 
 	// Called each time the slide changes
 	$scope.slideChanged = function (index) {
 
 		$scope.slideIndex = index;
+
+    kudagoService.getAllEvents();
 
 	};
 
@@ -281,7 +283,150 @@ var app = angular.module('main.module');
 
 app.service('mainService', require('./main.service'));
 
-},{"./main.service":12}],12:[function(require,module,exports){
+// Инициализируем сервисы kudago
+require('./kudago');
+
+
+},{"./kudago":12,"./main.service":15}],12:[function(require,module,exports){
+/**
+ * Created by iretd on 28.09.16.
+ */
+
+var app = angular.module('main.module');
+
+app.service('kudagoEventsService', require('./kudago.events.service'));
+app.service('kudagoService', require('./kudago.service.js'));
+
+},{"./kudago.events.service":13,"./kudago.service.js":14}],13:[function(require,module,exports){
+/**
+ * Created by iretd on 28.09.16.
+ */
+
+KudagoEventsService.$inject = ['$http', '$log'];
+
+module.exports = KudagoEventsService;
+
+var links = {
+
+  events:          'http://kudago.com/public-api/v1.3/events/',
+  eventsOfTheDay:  'https://kudago.com/public-api/v1.3/events-of-the-day',
+  eventCategories: 'https://kudago.com/public-api/v1.3/event-categories'
+
+};
+
+function KudagoEventsService($http, $log) {
+
+  var t = {};
+
+  t.getAllEvents = getAllEvents;
+
+  return t;
+
+  function getAllEvents(callbackForResults) {
+
+
+    /*   var params = JSON.stringify({// Поля, которые хотим получить о каждом событии в ответе.
+     fields: 'id,' +
+     'publication_date,' +
+     'dates,' +
+     'title,' +
+     'short_title,' +
+     'slug,' +
+     'place,' +
+     'description,' +
+     'body_text,' +
+     'location,' +
+     'categories,' +
+     'tagline,' +
+     'age_restriction,' +
+     'price,' +
+     'is_free,' +
+     'images,' +
+     'favorites_count,' +
+     'comments_count,' +
+     'site_url,' +
+     'tags,' +
+     'participants'
+     });
+
+     $http.jsonp(links.events + params)
+     .then(function (json) {
+     $log.log(json);
+     });*/
+
+
+    $http({
+      method: 'JSONP',
+      url:    links.events,
+      params: {
+        callback: 'JSON_CALLBACK'
+      }
+     /*params:  {
+        callback:'JSON_CALLBACK',
+        // Поля, которые хотим получить о каждом событии в ответе.
+        fields: 'id,' +
+                'publication_date,' +
+                'dates,' +
+                'title,' +
+                'short_title,' +
+                'slug,' +
+                'place,' +
+                'description,' +
+                'body_text,' +
+                'location,' +
+                'categories,' +
+                'tagline,' +
+                'age_restriction,' +
+                'price,' +
+                'is_free,' +
+                'images,' +
+                'favorites_count,' +
+                'comments_count,' +
+                'site_url,' +
+                'tags,' +
+                'participants'
+      }
+      */
+    }).success(function (response) {
+
+      $log.log(response);
+      callbackForResults(response);
+
+    }).
+    error(function(status) {
+      //your code when fails
+      $log.log(status);
+    });
+  }
+}
+
+},{}],14:[function(require,module,exports){
+/**
+ * Created by iretd on 28.09.16.
+ */
+
+KudagoService.$inject = ['kudagoEventsService'];
+
+module.exports = KudagoService;
+
+
+function KudagoService(KudagoEventsService) {
+
+  var t = {};
+
+  t.getAllEvents = getAllEvents;
+
+  return t;
+
+  function getAllEvents(callback) {
+
+    KudagoEventsService.getAllEvents(callback);
+
+  }
+
+};
+
+},{}],15:[function(require,module,exports){
 'use strict';
 
 MainService.$inject = ['$log', '$timeout'];
