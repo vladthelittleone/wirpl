@@ -24,7 +24,7 @@ var schema = new Schema ({
 		type: String
 	},
 	birthDate: {
-		typ: String
+		type: String
 	},
 	smallPhotoUrl: {
 		type: String
