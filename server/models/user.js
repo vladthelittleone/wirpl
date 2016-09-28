@@ -43,8 +43,50 @@ var schema = new Schema ({
 });
 
 schema.statics.findOrCreateVKUser = findOrCreateVKUser;
+schema.statics.getUsers = getUsers;
 
 exports.User = mongoose.model('User', schema);
+
+/**
+ * Возвращаем все пользователей
+ * если sex = 1 возвращает только женщин
+ * если sex = 2 возвращает только мужчин
+ * если sex = 0 возвращает всех
+ * @param sex
+ */
+function getUsers(sex, callback) {
+
+	var User = this;
+
+	async.waterfall([
+
+		(callback) => {
+			
+			if (sex != 0) {
+				
+				User.find({sex: sex}, callback);
+				
+			} else {
+
+				User.find({}, callback);
+				
+			}
+
+		}, (users, callback) => {
+			
+			if (users.length == 0) {
+				
+				callback("Users can't find");
+				
+			}
+			else {
+
+				callback(null, users);
+				
+			}
+			
+		}], callback);
+}
 
 /**
  * Функция ищет пользователя по его vk id
