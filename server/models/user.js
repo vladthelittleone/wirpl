@@ -2,20 +2,42 @@
 
 var async = require('async');
 var mongoose = require('../utils/mongoose');
+var moment = require('moment');
 
 var Schema = mongoose.Schema;
 
-var schema = new Schema({
-	email:              {
-		type:     String,
-		unique:   true,
+var schema = new Schema ({
+	email: {
+		type: String
+	},
+	vkId: {
+		type: String,
+		unique: true,
 		required: true
 	},
-	vkId:		        {
-		type:     String
+	userName: {
+		type: String
 	},
-	created:            {
-		type:    Date,
+	sex: {
+		type: Number
+	},
+	photoUrl: {
+		type: String
+	},
+	birthDate: {
+		type: Date
+	},
+	smallPhotoUrl: {
+		type: String
+	},
+	universities: {
+		type: Array
+	},
+	city: {
+		type: String
+	},
+	created: {
+		type: Date,
 		default: Date.now
 	}
 });
@@ -29,7 +51,7 @@ exports.User = mongoose.model('User', schema);
  * если пользователь не найдет функция создает нового пользователя
  * в базе
  */
-function findOrCreateVKUser (vkId, email, callback) {
+function findOrCreateVKUser (email, profile, callback) {
 
 	var User = this;
 
@@ -37,30 +59,42 @@ function findOrCreateVKUser (vkId, email, callback) {
 
 		(callback) => {
 
-			User.findOne({vkId: vkId}, callback);
+			User.findOne({vkId: profile.id}, callback);
 
 		},
 		(user, callback) => {
 
 			if (!user) {
 
+				var response = profile._json;
+
 				var newbie = new User ({
 
 					email: email,
-					vkId: vkId
+					vkId: profile.id,
+					userName: profile.displayName,
+					sex: response.sex,
+					photoUrl: response.photo_max,
+					smallPhotoUrl: response.photo,
+					universities: response.universities,
+					city: response.city.title,
+					birthDate: moment(response.bdate, "DD.MM.YYYY")
 
 				});
 
-				newbie.save((err) => {
+				newbie.save((err, _user) => {
 
-					callback(err, newbie);
+					callback(err, _user)
 
 				});
+
 			}
+			else {
 
-			callback(null, user);
-		}
-
-	], callback);
+				callback (null, user);
+				
+			}
+			
+		}], callback);
 
 }
