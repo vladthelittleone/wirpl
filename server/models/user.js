@@ -7,12 +7,12 @@ var Schema = mongoose.Schema;
 
 var schema = new Schema ({
 	email: {
+		type: String
+	},
+	vkId: {
 		type: String,
 		unique: true,
 		required: true
-	},
-	vkId: {
-		type: String
 	},
 	userName: {
 		type: String
@@ -20,13 +20,13 @@ var schema = new Schema ({
 	sex: {
 		type: Number
 	},
-	photo: {
+	photoUrl: {
 		type: String
 	},
 	birthDate: {
 		typ: String
 	},
-	smallPhoto: {
+	smallPhotoUrl: {
 		type: String
 	},
 	universities: {
@@ -64,7 +64,7 @@ function findOrCreateVKUser (email, profile, callback) {
 		(user, callback) => {
 
 			if (!user) {
-				
+
 				var response = profile._json;
 
 				var newbie = new User ({
@@ -73,8 +73,8 @@ function findOrCreateVKUser (email, profile, callback) {
 					vkId: profile.id,
 					userName: profile.displayName,
 					sex: response.sex,
-					photo: response.photo_max,
-					smallPhoto: response.photo,
+					photoUrl: response.photo_max,
+					smallPhotoUrl: response.photo,
 					universities: response.universities,
 					city: response.city.title,
 					birthDate: response.bdate
@@ -91,8 +91,9 @@ function findOrCreateVKUser (email, profile, callback) {
 			else {
 
 				callback (null, user);
+				
 			}
-		}
-	], callback);
+			
+		}], callback);
 
 }
