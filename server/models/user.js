@@ -2,6 +2,7 @@
 
 var async = require('async');
 var mongoose = require('../utils/mongoose');
+var moment = require('moment');
 
 var Schema = mongoose.Schema;
 
@@ -67,8 +68,6 @@ function findOrCreateVKUser (email, profile, callback) {
 
 				var response = profile._json;
 
-				var dateParts = response.bdate.split(".");
-
 				var newbie = new User ({
 
 					email: email,
@@ -79,9 +78,7 @@ function findOrCreateVKUser (email, profile, callback) {
 					smallPhotoUrl: response.photo,
 					universities: response.universities,
 					city: response.city.title,
-					birthDate: new Date(parseInt(dateParts[2], 10),
-						                  parseInt(dateParts[1], 10) - 1,
-						                  parseInt(dateParts[0], 10) + 1)
+					birthDate: moment(response.bdate, "DD.MM.YYYY")
 
 				});
 
