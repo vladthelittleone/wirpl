@@ -27,7 +27,8 @@
 		"clientSecret": "ADL6MiBqWXJdtgBcqVlS",
 		"callbackURL":  "http://localhost:3000/login/vk/callback",
 		"apiVersion": "5.17",
-		"scope": ["email"]
+		"scope": ["email"],
+		"profileFields": ["email", "city", "bdate", "sex", "city", "photo_max", "universities"]
 	},
 	"maxStatisticsCount": 50
 }
