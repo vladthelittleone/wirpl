@@ -1,13 +1,13 @@
 'use strict';
 
 const login = require ('./login');
-const people = require ('./people');
+const find = require ('./find');
 var HttpError = require('../error').HttpError;
 
 module.exports = function (app) {
 
 	app.use ('/login', login);
-	app.use ('/people', people);
+	app.use ('/find', find);
 
 	// Мидлвер
 	// Данный мидлвар осуществляет проверку аутентификации пользователя,

@@ -47,36 +47,21 @@ schema.statics.getUsers = getUsers;
 
 exports.User = mongoose.model('User', schema);
 
-/**
- * Возвращаем все пользователей
- * если sex = 1 возвращает только женщин
- * если sex = 2 возвращает только мужчин
- * если sex = 0 возвращает всех
- * @param sex
- */
-function getUsers(sex, callback) {
+function getUsers(searchParam, callback) {
 
 	var User = this;
 
 	async.waterfall([
 
 		(callback) => {
-			
-			if (sex != 0) {
-				
-				User.find({sex: sex}, callback);
-				
-			} else {
 
-				User.find({}, callback);
-				
-			}
+			User.find(searchParam, callback);
 
 		}, (users, callback) => {
 			
-			if (users.length == 0) {
+			if (!users.length) {
 				
-				callback("Users can't find");
+				callback("Can't find users.");
 				
 			}
 			else {
