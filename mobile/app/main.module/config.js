@@ -21,12 +21,12 @@ function MainConfig($stateProvider) {
 			abstract: true,
 			templateUrl: 'main.module/templates/tabs.html'
 		})
-		.state('main.list', {
-			url: '/list',
+		.state('main.wirpl', {
+			url: '/wirpl',
 			views: {
-				'tab-list': {
-					templateUrl: 'main.module/templates/list.html',
-					// controller: 'SomeCtrl as ctrl'
+				'tab-wirpl': {
+					templateUrl: 'main.module/templates/wirpl.html',
+					controller: 'WirplController as ctrl'
 				}
 			}
 		})

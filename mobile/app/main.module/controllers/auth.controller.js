@@ -1,20 +1,36 @@
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-AuthController.$inject = ['$scope', '$state', '$ionicSlideBoxDelegate'];
+AuthController.$inject = ['$scope', '$http', '$state'];
 
 module.exports = AuthController;
 
 /**
  * Вьюха авторизации.
  */
-function AuthController ($scope, $state, $ionicSlideBoxDelegate) {
+function AuthController ($scope, $http, $state) {
+
+
+	$scope.authenticate = authenticate;
+	$scope.slideChanged = slideChanged;
 
 	// Called each time the slide changes
-	$scope.slideChanged = function (index) {
+	function slideChanged(index) {
 
 		$scope.slideIndex = index;
 
-	};
+	}
+
+	function authenticate () {
+
+		$http.get('/login/vk', function (data) {
+
+			console.log(data);
+
+		});
+
+		$state.go('main.wirpl');
+
+	}
 
 }

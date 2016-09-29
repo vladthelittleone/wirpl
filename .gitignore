@@ -12,7 +12,7 @@ out/
 build/
 node_modules/
 com_crashlytics_export_strings.xml
-public/javascripts/bundle.js
+bundle.js
 
 ## OS Specific
 .DS_Store

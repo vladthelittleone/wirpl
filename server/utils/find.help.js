@@ -1,6 +1,6 @@
 'use strict';
 
-var User = require ('../models/user').User;
+var User = require('../models/user').User;
 
 const config = require('../config');
 
@@ -10,41 +10,26 @@ module.exports = FindHelp;
 
 function FindHelp() {
 
-	var that = {};
+    var that = {};
 
-	that.getRandomUser = getRandomUser;
+    that.getRandomUser = getRandomUser;
 
-	return that;
+    return that;
 
-	function getRandomUser(sex, res) {
+    function getRandomUser(sex, res) {
 
-		var searchBySex = sex ? { sex: sex } : {};
+        var searchBySex = sex ? {sex: sex} :
+                                {};
 
-		User.getUsers(searchBySex, (error, users) => {
+        User.getUsers(searchBySex, (error, users) => {
 
-			var result = [];
+            var result = error ? [{error: "Error"}] :
+                                 lodash.sampleSize(users, config.get('countOfRandomUsers'));
 
-			if (!error) {
+            res.send(result);
 
-				result = lodash.sampleSize(users, config.get('findUserMaxValue'));
+        });
 
-			}
-			else {
+    }
 
-				result = [{ error: "Error" }];
-
-			}
-
-			res.send(result);
-
-		});
-
-	}
-
-    // Возвращает случайное число до max
-	function getRandomArbitrary(max) {
-
-		return Math.floor(Math.random() * max);
-
-	}
 }

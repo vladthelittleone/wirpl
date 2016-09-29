@@ -58,17 +58,12 @@ function getUsers(searchParam, callback) {
 			User.find(searchParam, callback);
 
 		}, (users, callback) => {
-			
-			if (!users.length) {
-				
-				callback("Can't find users.");
-				
-			}
-			else {
 
-				callback(null, users);
-				
-			}
+			let error = users.length ? null :
+										"Can't find users.";
+
+			callback(error, users);
+
 			
 		}], callback);
 }
@@ -115,8 +110,7 @@ function findOrCreateVKUser (email, profile, callback) {
 
 				});
 
-			}
-			else {
+			} else {
 
 				callback (null, user);
 				
