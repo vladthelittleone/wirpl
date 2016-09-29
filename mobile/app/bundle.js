@@ -39,7 +39,7 @@ function runBlock($state) {
 
 }
 
-},{"./main.module":10}],2:[function(require,module,exports){
+},{"./main.module":11}],2:[function(require,module,exports){
 'use strict';
 
 MainConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
@@ -63,12 +63,12 @@ function MainConfig($stateProvider) {
 			abstract: true,
 			templateUrl: 'main.module/templates/tabs.html'
 		})
-		.state('main.list', {
-			url: '/list',
+		.state('main.wirpl', {
+			url: '/wirpl',
 			views: {
-				'tab-list': {
-					templateUrl: 'main.module/templates/list.html',
-					// controller: 'SomeCtrl as ctrl'
+				'tab-wirpl': {
+					templateUrl: 'main.module/templates/wirpl.html',
+					controller: 'WirplController as ctrl'
 				}
 			}
 		})
@@ -140,21 +140,37 @@ app.constant('config', require('./config.const'));
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-AuthController.$inject = ['$scope', '$state', '$ionicSlideBoxDelegate'];
+AuthController.$inject = ['$scope', '$http', '$state'];
 
 module.exports = AuthController;
 
 /**
  * Вьюха авторизации.
  */
-function AuthController ($scope, $state, $ionicSlideBoxDelegate) {
+function AuthController ($scope, $http, $state) {
+
+
+	$scope.authenticate = authenticate;
+	$scope.slideChanged = slideChanged;
 
 	// Called each time the slide changes
-	$scope.slideChanged = function (index) {
+	function slideChanged(index) {
 
 		$scope.slideIndex = index;
 
-	};
+	}
+
+	function authenticate () {
+
+		$http.get('/login/vk', function (data) {
+
+			console.log(data);
+
+		});
+
+		$state.go('main.wirpl');
+
+	}
 
 }
 
@@ -227,8 +243,88 @@ var app = angular.module('main.module');
 
 app.controller('DebugController', require('./debug.controller'));
 app.controller('AuthController', require('./auth.controller'));
+app.controller('WirplController', require('./wirpl.controller'));
 
-},{"./auth.controller":5,"./debug.controller":6}],8:[function(require,module,exports){
+},{"./auth.controller":5,"./debug.controller":6,"./wirpl.controller":8}],8:[function(require,module,exports){
+/**
+ * Created by vladthelittleone on 25.09.16.
+ */
+WirplController.$inject = ['$scope', 'TDCardDelegate', '$timeout'];
+
+module.exports = WirplController;
+
+/**
+ * Контроллер страницы вывода пользователей и мероприятий.
+ */
+function WirplController ($scope, TDCardDelegate, $timeout) {
+
+	var cards = [
+		{ image: 'http://c4.staticflickr.com/4/3924/18886530069_840bc7d2a5_n.jpg' },
+		{ image: 'http://c1.staticflickr.com/1/421/19046467146_548ed09e19_n.jpg' },
+		{ image: 'http://c1.staticflickr.com/1/278/18452005203_a3bd2d7938_n.jpg' },
+		{ image: 'http://c1.staticflickr.com/1/297/19072713565_be3113bc67_n.jpg' },
+		{ image: 'http://c1.staticflickr.com/1/536/19072713515_5961d52357_n.jpg' },
+		{ image: 'http://c4.staticflickr.com/4/3937/19072713775_156a560e09_n.jpg' },
+		{ image: 'http://c1.staticflickr.com/1/267/19067097362_14d8ed9389_n.jpg' }
+	];
+
+
+	$scope.cards = {
+		// Master - cards that haven't been discarded
+		master: Array.prototype.slice.call(cards, 0),
+		// Active - cards displayed on screen
+		active: Array.prototype.slice.call(cards, 0),
+		// Discards - cards that have been discarded
+		discards: [],
+		// Liked - cards that have been liked
+		liked: [],
+		// Disliked - cards that have disliked
+		disliked: []
+	};
+
+	// Removes a card from cards.active
+	$scope.cardDestroyed = function(index) {
+		$scope.cards.active.splice(index, 1);
+	};
+
+	// Adds a card to cards.active
+	$scope.addCard = function() {
+		var newCard = cardTypes[0];
+		$scope.cards.active.push(angular.extend({}, newCard));
+	};
+
+	// Triggers a refresh of all cards that have not been discarded
+	$scope.refreshCards = function() {
+		// First set $scope.cards to null so that directive reloads
+		$scope.cards.active = null;
+		// Then set cards.active to a new copy of cards.master
+		$timeout(function() {
+			$scope.cards.active = Array.prototype.slice.call($scope.cards.master, 0);
+		});
+	};
+
+	// Listens for the 'removeCard' event emitted from within the directive
+	//  - triggered by the onClickTransitionOut click event
+	$scope.$on('removeCard', function(event, element, card) {
+		var discarded = $scope.cards.master.splice($scope.cards.master.indexOf(card), 1);
+		$scope.cards.discards.push(discarded);
+	});
+
+	// On swipe left
+	$scope.cardSwipedLeft = function(index) {
+		var card = $scope.cards.active[index];
+		$scope.cards.disliked.push(card);
+	};
+
+	// On swipe right
+	$scope.cardSwipedRight = function(index) {
+		var card = $scope.cards.active[index];
+		$scope.cards.liked.push(card);
+	};
+
+}
+
+},{}],9:[function(require,module,exports){
 'use strict';
 
 /**
@@ -238,7 +334,7 @@ app.controller('AuthController', require('./auth.controller'));
  */
 var app = angular.module('main.module');
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 /**
@@ -248,13 +344,14 @@ var app = angular.module('main.module');
  */
 var app = angular.module('main.module');
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var app = angular.module('main.module', [
 	'ionic',
 	'ngCordova',
-	'ui.router'
+	'ui.router',
+	'ionic.contrib.ui.tinderCards2'
 ]);
 
 app.config(require('./config'));
@@ -269,7 +366,7 @@ require('./constants');
 require('./filters');
 require('./filters');
 
-},{"./config":2,"./constants":4,"./controllers":7,"./directives":8,"./filters":9,"./services":11}],11:[function(require,module,exports){
+},{"./config":2,"./constants":4,"./controllers":7,"./directives":9,"./filters":10,"./services":12}],12:[function(require,module,exports){
 'use strict';
 
 /**
@@ -281,7 +378,7 @@ var app = angular.module('main.module');
 
 app.service('mainService', require('./main.service'));
 
-},{"./main.service":12}],12:[function(require,module,exports){
+},{"./main.service":13}],13:[function(require,module,exports){
 'use strict';
 
 MainService.$inject = ['$log', '$timeout'];
