@@ -29,13 +29,13 @@ app.use(cookieParser());
 const MongoStore = require('connect-mongo/es5')(session);
 
 app.use(session({
-					secret: config.get('session:secret'), // ABCDE242342342314123421.SHA256
-					key: config.get('session:key'),
-					resave: config.get('session:resave'),
-					saveUninitialized: config.get('session:saveUninitialized'),
-					cookie: config.get('session:cookie'),
-					store: new MongoStore({mongooseConnection: mongoose.connection})
-}));
+                    secret:            config.get('session:secret'), // ABCDE242342342314123421.SHA256
+                    key:               config.get('session:key'),
+                    resave:            config.get('session:resave'),
+                    saveUninitialized: config.get('session:saveUninitialized'),
+                    cookie:            config.get('session:cookie'),
+                    store:             new MongoStore({mongooseConnection: mongoose.connection})
+                }));
 
 // init passportJS
 app.use(passport.initialize());
@@ -48,34 +48,34 @@ require('../server/routes')(app);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
 
-	var err = new Error('На просторах вселенной страница не найдена!');
-	err.status = 404;
-	next(err);
+    var err = new Error('На просторах вселенной страница не найдена!');
+    err.status = 404;
+    next(err);
 
 });
 
 app.use(function (err, req, res, next) {
 
-	if (app.get('env') === 'development') {
+    if (app.get('env') === 'development') {
 
-		logger.error(err);
+        logger.error(err);
 
-	}
+    }
 
 });
 
 if (app.get('env') === 'development') {
 
-	setInterval(function () {
+    setInterval(function () {
 
-		var heap = process.memoryUsage().heapUsed;
+                    var heap = process.memoryUsage().heapUsed;
 
-		maxHeap = maxHeap < heap ? heap : maxHeap;
+                    maxHeap = maxHeap < heap ? heap : maxHeap;
 
-		logger.info('Heap size: ' + heap + ', maximum heap size: ' + maxHeap);
+                    logger.info('Heap size: ' + heap + ', maximum heap size: ' + maxHeap);
 
-	},
-	10000);
+                },
+                10000);
 
 }
 
