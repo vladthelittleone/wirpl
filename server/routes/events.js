@@ -21,7 +21,7 @@ router.get('/all', (req, res, next) => {
 
         if (error) {
 
-            logger.error('Cant get all events :(');
+            logger.warn('Cant get all events :(');
 
             // В случае ошибки, пока что просто отправляем пустой объект.
             res.send({});
