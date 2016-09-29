@@ -9,8 +9,7 @@ module.exports = Connection;
  */
 var links = {
 
-    login:    '/login',
-    vkAuth:   '/vk/callback'
+    login:    '/login/vk',
 };
 
 /**
@@ -28,7 +27,8 @@ function Connection($http) {
 
   function authentication(callback){
 
-    $http.get(links.vkAuth, callback);
+    $http.get(links.login, callback);
 
   }
+
 }
