@@ -43,8 +43,30 @@ var schema = new Schema ({
 });
 
 schema.statics.findOrCreateVKUser = findOrCreateVKUser;
+schema.statics.getUsers = getUsers;
 
 exports.User = mongoose.model('User', schema);
+
+function getUsers(searchParam, callback) {
+
+	var User = this;
+
+	async.waterfall([
+
+		(callback) => {
+
+			User.find(searchParam, callback);
+
+		}, (users, callback) => {
+
+			let error = users.length ? null :
+										"Can't find users.";
+
+			callback(error, users);
+
+			
+		}], callback);
+}
 
 /**
  * Функция ищет пользователя по его vk id
@@ -88,8 +110,7 @@ function findOrCreateVKUser (email, profile, callback) {
 
 				});
 
-			}
-			else {
+			} else {
 
 				callback (null, user);
 				
