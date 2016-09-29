@@ -1,4 +1,4 @@
-module.exports = Events();
+'use strict';
 
 /**
  * Парсер событий с API kudago (http://api.kudago.com).
@@ -32,15 +32,18 @@ module.exports = Events();
  * Created by iretd on 28.09.16.
  */
 
-var httpRequest = require('request');
+const httpRequest = require('request');
+
 const logger = require('./../../utils/log')(module);
 
 // URL'ы для похода за информацией по событиям к kudago.
-var urls = {
+const urls = {
     events:          'http://kudago.com/public-api/v1.3/events/',
     eventsOfTheDay:  'https://kudago.com/public-api/v1.3/events-of-the-day',
     eventCategories: 'https://kudago.com/public-api/v1.3/event-categories'
 };
+
+module.exports = Events();
 
 function Events() {
 
@@ -76,7 +79,7 @@ function Events() {
      * @param location место проведения всех событий.
      * @param actualSinceInSeconds включить в выдачу только те события,
      *                                  которые начались после указанного момента времени (в СЕКУНДАХ).
-     * @param callback
+     * @param callback метод обратного вызова для получения списка всех событий.
      */
     function getAllEvents(page,
                           location,

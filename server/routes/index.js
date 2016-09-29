@@ -1,7 +1,8 @@
 'use strict';
 
-const login = require ('./login');
 var HttpError = require('../error').HttpError;
+
+const login = require ('./login');
 const events = require('./events');
 
 module.exports = function (app) {
