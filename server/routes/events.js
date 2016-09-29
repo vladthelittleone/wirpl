@@ -1,12 +1,16 @@
+'use strict';
+
 /**
- * Created by root on 29.09.16.
+ * Created by iretd on 29.09.16.
  */
 
-var express = require('express');
-const logger = require('./../utils/log')(module);
-var router = express.Router();
+const express = require('express');
 
-var kudagoEventsParser = require('./../parsers/kudago/events');
+const logger = require('./../utils/log')(module);
+
+const router = express.Router();
+
+const kudagoEventsParser = require('./../parsers/kudago/events');
 
 module.exports = router;
 
