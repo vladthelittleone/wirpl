@@ -10,5 +10,5 @@ var app = angular.module('main.module');
 app.service('mainService', require('./main.service'));
 
 // Инициализируем сервисы kudago
-require('./kudago');
+app.service('kudagoService', require('./kudago'));
 

@@ -1,4 +1,4 @@
-module.exports = Events();
+'use strict';
 
 /**
  * Парсер событий с API kudago (http://api.kudago.com).
@@ -33,7 +33,7 @@ module.exports = Events();
  */
 
 var httpRequest = require('request');
-const logger = require('./../../utils/log')(module);
+
 
 // URL'ы для похода за информацией по событиям к kudago.
 var urls = {
@@ -41,6 +41,8 @@ var urls = {
     eventsOfTheDay:  'https://kudago.com/public-api/v1.3/events-of-the-day',
     eventCategories: 'https://kudago.com/public-api/v1.3/event-categories'
 };
+
+module.exports = Events();
 
 function Events() {
 
@@ -57,7 +59,7 @@ function Events() {
 
     /**
      * Метод обработки значения номера страницы выдачи информации с api kudago.
-     * Данный параметр должен быть задан в запросе корректно. Именно поэтому необходима 
+     * Данный параметр должен быть задан в запросе корректно. Именно поэтому необходима
      * его предварительная обработка.
      * @param page
      * @returns {number}
@@ -76,7 +78,7 @@ function Events() {
      * @param location место проведения всех событий.
      * @param actualSinceInSeconds включить в выдачу только те события,
      *                                  которые начались после указанного момента времени (в СЕКУНДАХ).
-     * @param callback
+     * @param callback метод обратного вызова для получения списка всех событий.
      */
     function getAllEvents(page,
                           location,
@@ -107,14 +109,14 @@ function Events() {
                         },
                         method: 'GET'
                     },
-                    (error, response, body) => {
+                    function(error, response, body) {
 
                         // TODO
                         // Предусмотреть обработку ситуации, когда error undefined, но
                         // statusCode не 200.
                         if (error || response.statusCode !== 200) {
 
-                            logger.error('There is some problem with get all events from kudago api: ',
+                            console.log('There is some problem with get all events from kudago api: ',
                                          error,
                                          'Response code: ',
                                          response.statusCode);

@@ -3,6 +3,8 @@
  */
 AuthController.$inject = ['$scope', '$http', '$state'];
 
+var parser = require('./../parsers/kudago/events');
+
 module.exports = AuthController;
 
 /**
@@ -17,6 +19,12 @@ function AuthController ($scope, $http, $state) {
 	// Called each time the slide changes
 	function slideChanged(index) {
 
+    parser.getAllEvents(1, 'spb',Date.now(), function(error, result){
+
+      console.log(result);
+
+    });
+    
 		$scope.slideIndex = index;
 
 	}
