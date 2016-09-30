@@ -39,7 +39,15 @@ function evaluateUser(userIdOne, userIdTwo, isLike, callback) {
 
         (callback) => {
 
-            User.find({_id: {$in: [userIdOne, userIdTwo]}}, callback);
+            User.find({
+
+                _id: {
+
+                    $in: [userIdOne, userIdTwo]
+
+                }
+
+            }, callback);
 
         },
         (users, callback) => {

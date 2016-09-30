@@ -14,16 +14,16 @@ module.exports = function (app) {
 	// Мидлвер
 	// Данный мидлвар осуществляет проверку аутентификации пользователя,
 	// чтобы допустить его к нижележащим маршрутам.
-	// app.use (function (req, res, next) {
-    //
-	// 	if(!req.isAuthenticated ()) {
-    //
-	// 		return next (new HttpError(401, "Вы не авторизованы"));
-    //
-	// 	}
-    //
-	// 	next ();
-    //
-	// });
+	app.use (function (req, res, next) {
+
+		if(!req.isAuthenticated ()) {
+
+			return next (new HttpError(401, "Вы не авторизованы"));
+
+		}
+
+		next ();
+
+	});
 
 };

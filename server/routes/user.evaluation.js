@@ -9,7 +9,6 @@ module.exports = router;
 
 router.get('/like', (req, res, next) => {
 
-
     UserEvaluationHelp.evaluateUser(req.query.idUserOne,
                                     req.query.idUserTwo,
                                     true,
