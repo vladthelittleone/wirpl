@@ -8,30 +8,36 @@ var User = require('../models/user').User;
 var Schema = mongoose.Schema;
 
 var schema = new Schema ({
-    userIdOne: {
+    firstUserId: {
+
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
+
     },
-    userIdTwo: {
+    twoUserId: {
+
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+
     },
     isLike: {
+
         type: Boolean,
         required: true
+
     }
 });
 
-schema.statics.evaluateUser = evaluateUser;
+schema.statics.rateUser = rateUser;
 
-exports.UserEvaluation = mongoose.model('UserEvaluation', schema);
+exports.UserRating = mongoose.model('UserRating', schema);
 
 /**
  * Функция вносит инфу о том что пользователь с заданым id проставил отметку
  * другому пользователю
  */
-function evaluateUser(userIdOne, userIdTwo, isLike, callback) {
+function rateUser(firstUserId, twoUserId, isLike, callback) {
 
     var UserEvaluation = this;
 
@@ -39,11 +45,14 @@ function evaluateUser(userIdOne, userIdTwo, isLike, callback) {
 
         (callback) => {
 
+            // провеяем что пользователи с такими id действительно существуют
+            // так как поиск идет по id записи, особых нагрузок это не должно создавать
+            //
             User.find({
 
                 _id: {
 
-                    $in: [userIdOne, userIdTwo]
+                    $in: [firstUserId, twoUserId]
 
                 }
 
@@ -56,10 +65,13 @@ function evaluateUser(userIdOne, userIdTwo, isLike, callback) {
             if(users.length == 2) {
 
                 // апдейтим инфо о лайке/дислайке
+                // тоесть получаеться следующее если записи нет, то она будет
+                // создана, если запись есть, то значение параметра isLike будет
+                // заменнено на новое
                 UserEvaluation.findOneAndUpdate({
 
-                    userIdOne: userIdOne,
-                    userIdTwo: userIdTwo
+                    firstUserId: firstUserId,
+                    twoUserId: twoUserId
 
                 }, {
 
@@ -71,13 +83,15 @@ function evaluateUser(userIdOne, userIdTwo, isLike, callback) {
 
                 }, {
 
+                    // флаг, означает, если запись не обнаруженна,
+                    // то необходимо создать новую.
                     upsert: true
 
                 }, callback);
 
             } else {
 
-                callback("Users can't find.");
+                callback("Can't find users.");
 
             }
 

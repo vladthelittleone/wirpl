@@ -2,13 +2,13 @@
 
 const login = require ('./login');
 const find = require ('./find');
-const userEvaluation = require ('./user.evaluation');
+const userRating = require ('./user.rating.js');
 var HttpError = require('../error').HttpError;
 
 module.exports = function (app) {
 
 	app.use ('/login', login);
-	app.use ('/evaluation', userEvaluation);
+	app.use ('/rating', userRating);
 	app.use ('/find', find);
 
 	// Мидлвер
