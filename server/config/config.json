@@ -30,5 +30,5 @@
 		"scope": ["email"],
 		"profileFields": ["email", "city", "bdate", "sex", "city", "photo_max", "universities"]
 	},
-	"maxStatisticsCount": 50
+	"countOfRandomUsers": 10
 }

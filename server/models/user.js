@@ -43,8 +43,30 @@ var schema = new Schema ({
 });
 
 schema.statics.findOrCreateVKUser = findOrCreateVKUser;
+schema.statics.getUsers = getUsers;
 
 exports.User = mongoose.model('User', schema);
+
+function getUsers(searchParam, callback) {
+
+	var User = this;
+
+	async.waterfall([
+
+		(callback) => {
+
+			User.find(searchParam, callback);
+
+		}, (users, callback) => {
+
+			let error = users.length ? null :
+										"Can't find users.";
+
+			callback(error, users);
+
+			
+		}], callback);
+}
 
 /**
  * Функция ищет пользователя по его vk id
@@ -59,42 +81,30 @@ function findOrCreateVKUser (email, profile, callback) {
 
 		(callback) => {
 
-			User.findOne({vkId: profile.id}, callback);
+			var response = profile._json;
 
-		},
-		(user, callback) => {
+			User.findOneAndUpdate({
 
-			if (!user) {
+				vkId: profile.id
 
-				var response = profile._json;
+			}, {
 
-				var newbie = new User ({
+				email: email,
+				userName: profile.displayName,
+				sex: response.sex,
+				photoUrl: response.photo_max,
+				smallPhotoUrl: response.photo,
+				universities: response.universities,
+				city: response.city.title,
+				birthDate: moment(response.bdate, "DD.MM.YYYY")
 
-					email: email,
-					vkId: profile.id,
-					userName: profile.displayName,
-					sex: response.sex,
-					photoUrl: response.photo_max,
-					smallPhotoUrl: response.photo,
-					universities: response.universities,
-					city: response.city.title,
-					birthDate: moment(response.bdate, "DD.MM.YYYY")
+			}, {
 
-				});
+				upsert: true,
+				new: true
 
-				newbie.save((err, _user) => {
+			}, callback);
 
-					callback(err, _user)
-
-				});
-
-			}
-			else {
-
-				callback (null, user);
-				
-			}
-			
 		}], callback);
 
 }
