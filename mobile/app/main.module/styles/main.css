@@ -96,3 +96,104 @@ body {
 .wirpl-auth-view .bar.bar-positive.bar-footer {
     background-image: linear-gradient(180deg, #6583b9, #6583b9 50%, transparent 50%);
 }
+
+td-card {
+    left: 0;
+    border-radius: 3px;
+    background-color: transparent;
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    padding: 10px;
+    top: 10%;
+    box-shadow: none;
+}
+
+td-card img {
+    border-radius: 4px 4px 0 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+.td-card {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+    width: 100%;
+    height: 100%;
+    background: white;
+}
+
+.image {
+    width: 100%;
+    height: 80%;
+}
+
+.wirpl-tabs .tabs {
+    background-size: 0;
+    padding-top: 10px;
+}
+
+.discard {
+    top: 80%;
+    bottom: inherit;
+}
+
+.info-container {
+    width: 100%;
+    height: 20%;
+}
+
+.info-name {
+    font-weight: bold;
+    padding: 0 15px;
+    font-size: 1.4em;
+    top: 80%;
+    right: 5%;
+    position: absolute;
+}
+
+.info-additional {
+    font-weight: bold;
+    float: right;
+    font-size: 0.8em;
+    top: 85%;
+    color: #989898;
+    right: 5%;
+    position: absolute;
+    padding: 0 15px;
+}
+
+.footer-like-button {
+    color: #69aa58 !important;
+}
+
+.footer-dislike-button {
+    color: #DE5151 !important;
+}
+
+.wirpl-footer {
+    top: initial !important;
+    bottom: 0;
+    padding-top: 0 !important;
+    margin-bottom: 10px;
+}
+
+.tab-item .footer-like-button,
+.tab-item .footer-dislike-button {
+    font-size: 3.5em !important;
+}
+
+.yes-text {
+    font-weight: bold;
+    top: 20px;
+    left: 20px;
+    color: #69aa58;
+}
+
+.no-text {
+    font-weight: bold;
+    top: 20px;
+    right: 20px;
+    color: #DE5151;
+}
