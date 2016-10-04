@@ -9,15 +9,15 @@ function UserRatingHelp() {
 
     let that = {};
 
-    that.rateUser = rateUser;
+    that.rate = rate;
 
     return that;
 
-    function rateUser(idUserOne, idUserTwo, isLike, res, next) {
+    function rate(idUserOne, idUserTwo, isLike, res, next) {
 
         if (idUserOne && idUserTwo) {
 
-            UserRating.rateUser(idUserOne, idUserTwo, isLike, (error) => {
+            UserRating.rate(idUserOne, idUserTwo, isLike, (error) => {
 
                 if (error) {
 

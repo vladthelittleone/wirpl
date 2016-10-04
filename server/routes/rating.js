@@ -9,20 +9,20 @@ module.exports = router;
 
 router.post('/like', (req, res, next) => {
 
-    UserRatingHelp.rateUser(req.query.firstUserId,
-                            req.query.secondUserId,
-                            true,
-                            res,
-                            next);
+    UserRatingHelp.rate(req.query.firstUserId,
+                        req.query.secondUserId,
+                        true,
+                        res,
+                        next);
 
 });
 
 router.post('/dislike', (req, res, next) => {
 
-    UserRatingHelp.rateUser(req.query.firstUserId,
-                            req.query.secondUserId,
-                            false,
-                            res,
-                            next);
+    UserRatingHelp.rate(req.query.firstUserId,
+                        req.query.secondUserId,
+                        false,
+                        res,
+                        next);
 
 });

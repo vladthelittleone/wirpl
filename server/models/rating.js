@@ -29,7 +29,7 @@ var schema = new Schema ({
     }
 });
 
-schema.statics.rateUser = rateUser;
+schema.statics.rateUser = rate;
 
 exports.UserRating = mongoose.model('UserRating', schema);
 
@@ -37,7 +37,7 @@ exports.UserRating = mongoose.model('UserRating', schema);
  * Функция вносит инфу о том что пользователь с заданым id проставил отметку
  * другому пользователю
  */
-function rateUser(who, whom, isLike, callback) {
+function rate(who, whom, isLike, callback) {
 
     var UserEvaluation = this;
 
