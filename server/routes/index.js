@@ -2,7 +2,7 @@
 
 const login = require ('./login');
 const find = require ('./find');
-const userRating = require ('./user.rating.js');
+const userRating = require ('./rating.js');
 var HttpError = require('../error').HttpError;
 
 module.exports = function (app) {

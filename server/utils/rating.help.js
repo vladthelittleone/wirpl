@@ -1,6 +1,6 @@
 'use strict';
 
-var UserRating = require('../models/user.rating.js').UserRating;
+var UserRating = require('../models/rating.js').UserRating;
 var HttpError = require('../error').HttpError;
 
 module.exports = UserRatingHelp;

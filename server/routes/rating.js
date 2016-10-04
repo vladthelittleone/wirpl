@@ -3,7 +3,7 @@
 var express = require('express');
 var router = express.Router();
 
-var UserRatingHelp = require ('../utils/user.rating.help.js')();
+var UserRatingHelp = require ('../utils/rating.help.js')();
 
 module.exports = router;
 

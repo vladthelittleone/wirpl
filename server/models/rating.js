@@ -8,14 +8,14 @@ var User = require('../models/user').User;
 var Schema = mongoose.Schema;
 
 var schema = new Schema ({
-    firstUserId: {
+    who: {
 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
 
     },
-    twoUserId: {
+    whom: {
 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -37,7 +37,7 @@ exports.UserRating = mongoose.model('UserRating', schema);
  * Функция вносит инфу о том что пользователь с заданым id проставил отметку
  * другому пользователю
  */
-function rateUser(firstUserId, twoUserId, isLike, callback) {
+function rateUser(who, whom, isLike, callback) {
 
     var UserEvaluation = this;
 
@@ -47,12 +47,11 @@ function rateUser(firstUserId, twoUserId, isLike, callback) {
 
             // провеяем что пользователи с такими id действительно существуют
             // так как поиск идет по id записи, особых нагрузок это не должно создавать
-            //
             User.find({
 
                 _id: {
 
-                    $in: [firstUserId, twoUserId]
+                    $in: [who, whom]
 
                 }
 
@@ -70,8 +69,8 @@ function rateUser(firstUserId, twoUserId, isLike, callback) {
                 // заменнено на новое
                 UserEvaluation.findOneAndUpdate({
 
-                    firstUserId: firstUserId,
-                    twoUserId: twoUserId
+                    who: who,
+                    whom: whom
 
                 }, {
 
