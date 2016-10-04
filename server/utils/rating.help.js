@@ -1,6 +1,6 @@
 'use strict';
 
-var UserRating = require('../models/rating.js').UserRating;
+var Rating = require('../models/rating.js').Rating;
 var HttpError = require('../error').HttpError;
 
 module.exports = UserRatingHelp;
@@ -13,11 +13,12 @@ function UserRatingHelp() {
 
     return that;
 
-    function rate(idUserOne, idUserTwo, isLike, res, next) {
+    function rate(who, whom, isLike, res, next) {
 
-        if (idUserOne && idUserTwo) {
+        if (who && whom) {
 
-            UserRating.rate(idUserOne, idUserTwo, isLike, (error) => {
+            // заносим в бд инфу о том кто и что оценил
+            Rating.rate(who, whom, isLike, (error) => {
 
                 if (error) {
 
@@ -31,8 +32,7 @@ function UserRatingHelp() {
 
             });
 
-        }
-        else {
+        } else {
 
             next(new HttpError(400, "Request parameters can't correct."));
 

@@ -29,9 +29,9 @@ var schema = new Schema ({
     }
 });
 
-schema.statics.rateUser = rate;
+schema.statics.rate = rate;
 
-exports.UserRating = mongoose.model('UserRating', schema);
+exports.Rating = mongoose.model('Rating', schema);
 
 /**
  * Функция вносит инфу о том что пользователь с заданым id проставил отметку
@@ -39,7 +39,7 @@ exports.UserRating = mongoose.model('UserRating', schema);
  */
 function rate(who, whom, isLike, callback) {
 
-    var UserEvaluation = this;
+    var Rating = this;
 
     async.waterfall([
 
@@ -61,13 +61,13 @@ function rate(who, whom, isLike, callback) {
         (users, callback) => {
 
             // проверяем что удалось найти двух пользователей
-            if(users.length == 2) {
+            if(users.length === 2) {
 
                 // апдейтим инфо о лайке/дислайке
                 // тоесть получаеться следующее если записи нет, то она будет
                 // создана, если запись есть, то значение параметра isLike будет
                 // заменнено на новое
-                UserEvaluation.findOneAndUpdate({
+                Rating.findOneAndUpdate({
 
                     who: who,
                     whom: whom
