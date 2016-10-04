@@ -2,13 +2,13 @@
 
 const login = require ('./login');
 const find = require ('./find');
-const userRating = require ('./rating.js');
+const rating = require ('./rating.js');
 var HttpError = require('../error').HttpError;
 
 module.exports = function (app) {
 
 	app.use ('/login', login);
-	app.use ('/rating', userRating);
+	app.use ('/rating', rating);
 	app.use ('/find', find);
 
 	// Мидлвер
@@ -16,13 +16,13 @@ module.exports = function (app) {
 	// чтобы допустить его к нижележащим маршрутам.
 	app.use (function (req, res, next) {
 
-		if(!req.isAuthenticated ()) {
+		if(!req.isAuthenticated()) {
 
 			return next (new HttpError(401, "Вы не авторизованы"));
 
 		}
 
-		next ();
+		next();
 
 	});
 
