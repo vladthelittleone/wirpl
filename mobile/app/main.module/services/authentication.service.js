@@ -23,14 +23,10 @@ function Authentication(connection) {
   /**
    * Метод входа в систему.
    *
-   * @param args.success коллбек успешного выполнения запроса
-   * @param args.error коллбек ошибочного выполнения запроса
-   * @param args.email идентификатор
-   * @param args.password пароль
    */
-  function login(args) {
+  function login(callback) {
 
-    connection.login(args);
+    connection.login(callback);
 
   }
 

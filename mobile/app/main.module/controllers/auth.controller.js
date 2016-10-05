@@ -3,7 +3,7 @@
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-AuthController.$inject = ['$scope', '$state', 'login'];
+AuthController.$inject = ['$scope', '$state', 'authentication'];
 
 
 module.exports = AuthController;
@@ -26,9 +26,13 @@ function AuthController ($scope, $state, authentication) {
 
   function authenticate() {
 
-    login.login(function (result) {
+    authentication.login(function (result) {
 
-      console.log(result);
+      if(result.userName){
+
+        $state.go('main.wirpl');
+
+      }
 
     })
   }
