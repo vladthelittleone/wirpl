@@ -158,7 +158,7 @@ function AuthController ($scope, $state, $ionicSlideBoxDelegate, connection) {
 
 	$scope.authenticate = function () {
 
-    connection.authentication(function (result) {
+    connection.login(function (result) {
 
       console.log(result);
 
@@ -302,7 +302,7 @@ function Connection($http) {
 
   var that = {};
 
-  that.authentication = authentication;
+  that.login = login;
 
   return that;
 

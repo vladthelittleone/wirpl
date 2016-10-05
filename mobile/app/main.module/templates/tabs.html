@@ -1,14 +1,20 @@
-<ion-tabs class="tabs-icon-top tabs-assertive">
+<ion-tabs class="tabs-icon-top tabs-top wirpl-tabs">
+
+  <!-- Debug Tab -->
+  <ion-tab icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear"
+           ui-sref="main.debug">
+    <ion-nav-view name="tab-debug"></ion-nav-view>
+  </ion-tab>
 
   <!-- List Tab -->
-  <ion-tab title="List" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong"
-    ui-sref="main.list">
-    <ion-nav-view name="tab-list"></ion-nav-view>
+  <ion-tab icon-off="ion-ios-shuffle" icon-on="ion-ios-shuffle-strong"
+    ui-sref="main.wirpl">
+    <ion-nav-view name="tab-wirpl"></ion-nav-view>
   </ion-tab>
 
   <!-- Debug Tab -->
-  <ion-tab title="Debug" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear"
-    ui-sref="main.debug">
+  <ion-tab icon-off="ion-ios-chatbubble-outline" icon-on="ion-ios-chatbubble"
+           ui-sref="main.debug">
     <ion-nav-view name="tab-debug"></ion-nav-view>
   </ion-tab>
 

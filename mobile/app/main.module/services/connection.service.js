@@ -20,12 +20,12 @@ function Connection($http) {
 
   var that = {};
 
-  that.authentication = authentication;
+  that.login = login;
 
   return that;
 
 
-  function authentication(callback){
+  function login(callback){
 
     $http.get(links.login, callback);
 

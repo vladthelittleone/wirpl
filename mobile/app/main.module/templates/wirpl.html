@@ -1,0 +1,43 @@
+<ion-view hide-nav-bar="true">
+    <ion-pane class="background-grey">
+        <!-- *************************
+          TD Cards
+          - We start off with an ng-if so that the cards are not generated
+            unless $scope.cards is not 'null'
+        ************************* -->
+        <div ng-if="cards.active">
+            <td-cards>
+                <td-card ng-repeat="card in cards.active"
+                         on-destroy="cardDestroyed($index)"
+                         on-swipe-left="cardSwipedLeft($index)"
+                         on-swipe-right="cardSwipedRight($index)"
+                         ng-show="$index === 0">
+                    <div class="image">
+                        <div class="no-text"><i class="icon">НЕТ</i></div>
+                        <div class="yes-text"><i class="icon">ДА</i></div>
+                        <!-- *************************
+                          Discard
+                          - The card is removed from the deck and a fly away animation is triggered.
+                          - onClickTransitionOut is found in ionic.tdcards.js
+                          - Animation can be customized by changing defaults
+                        ************************* -->
+                        <div class="discard" ng-click="onClickTransitionOut(card)">23 года</div>
+                        <img ng-src="{{ card.image }}">
+                    </div>
+                    <div class="info-container">
+                        <div class="info-name">Женя</div>
+                        <div class="info-additional">Спб ГУАП</div>
+                    </div>
+                </td-card>
+            </td-cards>
+        </div>
+        <div class="tabs wirpl-footer">
+            <a class="tab-item" href="#">
+                <i class="icon ion-close-round footer-dislike-button"></i>
+            </a>
+            <a class="tab-item active" href="#">
+                <i class="icon ion-ios-heart footer-like-button"></i>
+            </a>ç
+        </div>
+    </ion-pane>
+</ion-view>

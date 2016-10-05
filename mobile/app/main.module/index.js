@@ -3,7 +3,8 @@
 var app = angular.module('main.module', [
 	'ionic',
 	'ngCordova',
-	'ui.router'
+	'ui.router',
+	'ionic.contrib.ui.tinderCards2'
 ]);
 
 app.config(require('./config'));
