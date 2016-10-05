@@ -13,21 +13,8 @@ function HttpError(status, message) {
 
 }
 
-// Ошибка авторизации
-function AuthError(message) {
-
-	Error.apply(this, arguments);
-	Error.captureStackTrace(this, AuthError);
-
-	this.message = message;
-
-}
-
-util.inherits(HttpError, Error);
-util.inherits(AuthError, Error);
+util.inherits(HttpError, Error);;
 
 HttpError.prototype.name = 'HttpError';
-AuthError.prototype.name = 'AuthError';
 
 exports.HttpError = HttpError;
-exports.AuthError = AuthError;
