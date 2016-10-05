@@ -26,7 +26,7 @@ function UserRatingHelp() {
 
                 } else {
 
-                    res.send({ result: "Success." });
+                    res.sendStatus(200)
 
                 }
 
@@ -34,7 +34,7 @@ function UserRatingHelp() {
 
         } else {
 
-            next(new HttpError(400, "Request parameters can't correct."));
+            next(new HttpError(400, "Request parameters aren't correct."));
 
         }
 
