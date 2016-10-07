@@ -10,7 +10,7 @@ module.exports = FindHelp;
 
 function FindHelp() {
 
-    var that = {};
+    let that = {};
 
     that.getRandomUser = getRandomUser;
 
@@ -18,7 +18,7 @@ function FindHelp() {
 
     function getRandomUser(sex, res) {
 
-        var searchBySex = sex ? {sex: sex} :
+        let searchBySex = sex ? {sex: sex} :
                                 {};
 
         User.getUsers(searchBySex, (error, users) => {

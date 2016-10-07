@@ -28,6 +28,8 @@ app.use(cookieParser());
 // Сторедж для сессии.
 const MongoStore = require('connect-mongo/es5')(session);
 
+app.use(require('./middlewares/send-http-error'));
+
 app.use(session({
 					secret: config.get('session:secret'), // ABCDE242342342314123421.SHA256
 					key: config.get('session:key'),
@@ -43,24 +45,36 @@ app.use(passport.session());
 
 passport.use('vk-login', VKStrategy.login);
 
-require('../server/routes')(app);
+require('./routes')(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
 
-	var err = new Error('На просторах вселенной страница не найдена!');
+	var err = new Error('Страница не найдена!');
 	err.status = 404;
 	next(err);
 
 });
 
+const HttpError = require('./error').HttpError;
+
 app.use(function (err, req, res, next) {
+
+	// Проверка на error/HttpError
+	if (typeof err == 'number') {
+
+		err = new HttpError(err);
+
+	}
 
 	if (app.get('env') === 'development') {
 
 		logger.error(err);
 
 	}
+
+	// middlewares/sendHttpError
+	res.sendHttpError(err);
 
 });
 
