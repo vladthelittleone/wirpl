@@ -27,7 +27,7 @@ function Connection($http) {
 
   function login(callback){
 
-    $http.get(links.login, callback);
+    $http.get(links.login).success(callback);
 
   }
 

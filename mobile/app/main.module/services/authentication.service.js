@@ -28,23 +28,19 @@ function Authentication(connection) {
    */
   function login(callback) {
 
-    connection.login(function (result, err) {
+    connection.login(function (result) {
 
       var success;
-      var error;
 
-      if (result.userName) {
+      if (result) {
 
         currentUser = result;
 
-        success = 'login';
+        success = true;
 
-      } else {
-
-        error = err;
       }
 
-      callback && callback(success, error);
+      callback && callback(success);
 
     });
 

@@ -26,7 +26,7 @@ function AuthController($scope, $state, authentication) {
 
   function authenticate() {
 
-    authentication.login(function (success, error) {
+    authentication.login(function (success) {
 
       if (success) {
 
