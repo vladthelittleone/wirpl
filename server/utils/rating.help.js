@@ -13,6 +13,9 @@ function UserRatingHelp() {
 
     return that;
 
+    // who и whom получаются от пользователя и по этому их необходимо проверять
+    // isLike проверять нет необходимости так
+    // как он задаеться вызывающей функцией и не присылеться пользователем
     function rate(who, whom, isLike, res, next) {
 
         if (who && whom) {
