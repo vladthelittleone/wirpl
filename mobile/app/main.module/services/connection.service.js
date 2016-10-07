@@ -25,7 +25,7 @@ function Connection($http) {
   return that;
 
 
-  function login(success, error){
+  function login(success, error) {
 
     $http.get(links.login)
       .success(success)
