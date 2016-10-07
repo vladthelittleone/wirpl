@@ -11,24 +11,24 @@ module.exports = AuthController;
 /**
  * Вьюха авторизации.
  */
-function AuthController ($scope, $state, authentication) {
+function AuthController($scope, $state, authentication) {
 
 
-	$scope.slideChanged = slideChanged;
+  $scope.slideChanged = slideChanged;
   $scope.authenticate = authenticate;
 
-	// Called each time the slide changes
-	function slideChanged(index) {
+  // Called each time the slide changes
+  function slideChanged(index) {
 
-		$scope.slideIndex = index;
+    $scope.slideIndex = index;
 
-	}
+  }
 
   function authenticate() {
 
     authentication.login(function (success, error) {
 
-      if(success){
+      if (success) {
 
         $state.go('main.wirpl');
 

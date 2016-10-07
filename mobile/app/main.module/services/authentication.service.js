@@ -28,12 +28,12 @@ function Authentication(connection) {
    */
   function login(callback) {
 
-    connection.login(function(result, err) {
+    connection.login(function (result, err) {
 
       var success;
       var error;
 
-      if(result.userName){
+      if (result.userName) {
 
         currentUser = result;
 
@@ -84,7 +84,7 @@ function Authentication(connection) {
    */
   function getCurrentUser(callback) {
 
-    if(currentUser){
+    if (currentUser) {
 
       return callback(currentUser);
 
