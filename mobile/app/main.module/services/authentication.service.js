@@ -16,7 +16,6 @@ function Authentication(connection) {
   that.logout = logout;
   that.isLoggedIn = isLoggedIn;
   that.currentUser = currentUser;
-  that.register = register;
 
   return that;
 
@@ -42,20 +41,6 @@ function Authentication(connection) {
     var error = args.error;
 
     connection.logout(success, error);
-
-  }
-
-  /**
-   * Метод регистрации в системе.
-   *
-   * @param args.success коллбек успешного выполнения запроса
-   * @param args.error коллбек ошибочного выполнения запроса
-   * @param args.email мэйл
-   * @param args.password пароль
-   */
-  function register(args) {
-
-    connection.register(args);
 
   }
 
