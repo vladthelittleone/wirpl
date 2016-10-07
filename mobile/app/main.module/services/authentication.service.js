@@ -30,17 +30,13 @@ function Authentication(connection) {
 
     connection.login(function (result) {
 
-      var success;
-
       if (result) {
 
         currentUser = result;
 
-        success = true;
-
       }
 
-      callback && callback(success);
+      callback && callback(result);
 
     });
 
