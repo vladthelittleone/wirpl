@@ -1,36 +1,40 @@
+'use strict';
+
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-AuthController.$inject = ['$scope', '$http', '$state'];
+AuthController.$inject = ['$scope', '$state', 'authentication'];
+
 
 module.exports = AuthController;
 
 /**
  * Вьюха авторизации.
  */
-function AuthController ($scope, $http, $state) {
+function AuthController($scope, $state, authentication) {
 
 
-	$scope.authenticate = authenticate;
-	$scope.slideChanged = slideChanged;
+  $scope.slideChanged = slideChanged;
+  $scope.authenticate = authenticate;
 
-	// Called each time the slide changes
-	function slideChanged(index) {
+  // Called each time the slide changes
+  function slideChanged(index) {
 
-		$scope.slideIndex = index;
+    $scope.slideIndex = index;
 
-	}
+  }
 
-	function authenticate () {
+  function authenticate() {
 
-		$http.get('/login/vk', function (data) {
+    authentication.login(function (success) {
 
-			console.log(data);
+      if (success) {
 
-		});
+        $state.go('main.wirpl');
 
-		$state.go('main.wirpl');
+      }
 
-	}
+    })
+  }
 
 }
