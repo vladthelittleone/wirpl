@@ -15,7 +15,10 @@ function Authentication(connection) {
   that.login = login;
   that.logout = logout;
   that.isLoggedIn = isLoggedIn;
-  that.currentUser = currentUser;
+  that.getCurrentUser = getCurrentUser;
+
+  // Текущий пользователь сервиса
+  var currentUser;
 
   return that;
 
@@ -25,7 +28,25 @@ function Authentication(connection) {
    */
   function login(callback) {
 
-    connection.login(callback);
+    connection.login(function(result, err) {
+
+      var success;
+      var error;
+
+      if(result.userName){
+
+        currentUser = result;
+
+        success = 'login';
+
+      } else {
+
+        error = err;
+      }
+
+      callback && callback(success, error);
+
+    });
 
   }
 
@@ -52,7 +73,7 @@ function Authentication(connection) {
    */
   function isLoggedIn(args) {
 
-    connection.isLoggedIn(args);
+    connection.login(args);
 
   }
 
@@ -61,17 +82,25 @@ function Authentication(connection) {
    *
    * @param callback
    */
-  function currentUser(callback) {
+  function getCurrentUser(callback) {
 
-    isLoggedIn({
+    if(currentUser){
 
-      success: function (res) {
+      return callback(currentUser);
 
-        callback(res.data);
+    } else {
 
-      }
+      isLoggedIn({
 
-    })
+        success: function (res) {
+
+          callback(res.data);
+
+        }
+
+      })
+
+    }
 
   }
 }

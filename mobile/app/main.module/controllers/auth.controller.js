@@ -26,9 +26,9 @@ function AuthController ($scope, $state, authentication) {
 
   function authenticate() {
 
-    authentication.login(function (result) {
+    authentication.login(function (success, error) {
 
-      if(result.userName){
+      if(success){
 
         $state.go('main.wirpl');
 
