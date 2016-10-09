@@ -11,5 +11,5 @@ function KudagoService() {
   var t = {};
 
   return t;
-
+  
 };

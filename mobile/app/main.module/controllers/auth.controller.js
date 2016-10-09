@@ -21,12 +21,12 @@ function AuthController ($scope, $http, $state) {
 	// Called each time the slide changes
 	function slideChanged(index) {
 
-    parser.getAllEvents(1, 'spb',Date.now(), function(error, result){
+    parser.getAllEvents(1, 'spb',Date.now() / 1000, function(error, result){
 
       console.log(result);
 
     });
-    
+
 		$scope.slideIndex = index;
 
 	}

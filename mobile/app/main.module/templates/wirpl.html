@@ -12,6 +12,7 @@
                          on-swipe-left="cardSwipedLeft($index)"
                          on-swipe-right="cardSwipedRight($index)"
                          ng-show="$index === 0">
+                  <div class="info-name">{{eventTitle}}</div>
                     <div class="image">
                         <div class="no-text"><i class="icon">НЕТ</i></div>
                         <div class="yes-text"><i class="icon">ДА</i></div>
@@ -21,12 +22,12 @@
                           - onClickTransitionOut is found in ionic.tdcards.js
                           - Animation can be customized by changing defaults
                         ************************* -->
-                        <div class="discard" ng-click="onClickTransitionOut(card)">23 года</div>
+                        <div class="discard" ng-click="onClickTransitionOut(card)">Санкт-Петербург</div>
                         <img ng-src="{{ card.image }}">
                     </div>
                     <div class="info-container">
-                        <div class="info-name">Женя</div>
-                        <div class="info-additional">Спб ГУАП</div>
+                        <div class="info-name">{{eventDate}}</div>
+                        <div class="info-additional">{{price}}</div>
                     </div>
                 </td-card>
             </td-cards>

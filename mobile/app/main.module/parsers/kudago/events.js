@@ -34,7 +34,6 @@
 
 var httpRequest = require('request');
 
-
 // URL'ы для похода за информацией по событиям к kudago.
 var urls = {
     events:          'http://kudago.com/public-api/v1.3/events/',
