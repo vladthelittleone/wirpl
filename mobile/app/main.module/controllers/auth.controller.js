@@ -3,14 +3,14 @@
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-AuthController.$inject = ['$scope', '$rootScope', '$state', '$cordovaInAppBrowser', '$ionicLoading', 'config'];
+AuthController.$inject = ['$scope', '$rootScope', '$state', '$cordovaInAppBrowser', 'config'];
 
 module.exports = AuthController;
 
 /**
  * Вьюха авторизации.
  */
-function AuthController ($scope, $rootScope, $state, $cordovaInAppBrowser, $ionicLoading, config) {
+function AuthController ($scope, $rootScope, $state, $cordovaInAppBrowser, config) {
 
 	$scope.slideChanged = slideChanged;
 	$scope.authenticate = authenticate;
@@ -36,7 +36,7 @@ function AuthController ($scope, $rootScope, $state, $cordovaInAppBrowser, $ioni
 		var options = {
 			location: 'no',
 			clearcache: 'yes',
-			toolbar: 'no'
+			toolbar: 'yes'
 		};
 
 		$cordovaInAppBrowser.open(url, '_blank', options);
@@ -54,7 +54,7 @@ function AuthController ($scope, $rootScope, $state, $cordovaInAppBrowser, $ioni
 	function cordovaLoadStart (e, event) {
 
 		//and this function is called, so you do something like
-		if (event.url !== url) {
+		if (event.url === config.buildUrl('/login/toapp')) {
 
 			$cordovaInAppBrowser.close();
 

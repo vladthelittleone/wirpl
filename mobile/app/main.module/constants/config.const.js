@@ -9,8 +9,7 @@ function Config () {
 	// gulp environment: injects environment vars
 	t.ENV = {
 		/*inject-env*/
-		'SERVER_URL': 'http://localhost:8080',
-		'SOME_OTHER_URL': '/postman-proxy'
+		'SERVER_URL': 'http://localhost:8080'
 		/*endinject*/
 	};
 

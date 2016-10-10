@@ -91,7 +91,7 @@ gulp.task('serve-livereload', ['cordova-prepare'], function (done) {
     gulp.watch(paths.scssFiles, ['styles']);
     // watch for changes in environment files and new config files
     gulp.watch([
-      'app/main/constants/env-*.json',
+      'app/main.module/constants/env-*.json',
       'app/*/constants/*config-const.js'
     ], ['environment']);
 
