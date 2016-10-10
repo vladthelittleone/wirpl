@@ -4,24 +4,28 @@ module.exports = Config();
 
 function Config () {
 
-  var config = {
+	var t = {};
 
-    // gulp environment: injects environment vars
-    ENV: {
-      /*inject-env*/
-      'SERVER_URL': 'https://DEVSERVER/api',
-          'SOME_OTHER_URL': '/postman-proxy'
-      /*endinject*/
-    },
+	// gulp environment: injects environment vars
+	t.ENV = {
+		/*inject-env*/
+		'SERVER_URL': 'http://localhost:8080',
+		'SOME_OTHER_URL': '/postman-proxy'
+		/*endinject*/
+	};
 
-    // gulp build-vars: injects build vars
-    BUILD: {
-      /*inject-build*/
-      /*endinject*/
-    }
+	// gulp build-vars: injects build vars
+	t.BUILD = {
+		/*inject-build*/
+		/*endinject*/
+	};
 
-  };
+	t.buildUrl = function (url) {
 
-  return config;
+		return t.ENV.SERVER_URL + url;
+
+	};
+
+	return t;
 
 }

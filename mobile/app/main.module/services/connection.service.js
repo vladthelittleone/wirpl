@@ -1,6 +1,6 @@
 'use strict';
 
-Connection.$inject = ['$http'];
+Connection.$inject = ['$http', 'config'];
 
 module.exports = Connection;
 
@@ -9,28 +9,27 @@ module.exports = Connection;
  */
 var links = {
 
-    login:    '/login/vk',
+	findRandomUser: '/find/random',
+
 };
 
 /**
- * Created by vaimer on 28.09.16.
+ * @since 28.09.16
+ * @author Skurishin Vladislav
  */
+function Connection ($http, config) {
 
-function Connection($http) {
+	var that = {};
 
-  var that = {};
+	that.findRandomUser = findRandomUser;
 
-  that.login = login;
+	return that;
 
-  return that;
+	function findRandomUser (callback) {
 
+		$http.get(config.buildUrl(links.findRandomUser))
+			.then(callback);
 
-  function login(success, error) {
-
-    $http.get(links.login)
-      .success(success)
-      .error(error);
-
-  }
+	}
 
 }
