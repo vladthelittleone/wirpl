@@ -144,6 +144,13 @@ td-card img {
     height: 20%;
 }
 
+.info-event-name {
+    font-weight: bold;
+    padding: 10px;
+    font-size: 1.4em;
+    text-align: center;
+}
+
 .info-name {
     font-weight: bold;
     padding: 0 15px;
@@ -151,8 +158,30 @@ td-card img {
     top: 80%;
     right: 5%;
     position: absolute;
-}z
+}
 
+.discard-event {
+    bottom: 25%;
+}
+
+.info-event-data {
+    width: 100%;
+    text-align: center;
+}
+
+.info-event-additional {
+    font-weight: bold;
+    float: right;
+    font-size: 0.8em;
+    color: #989898;
+    width: 100%;
+    text-align: center;
+    right: 0;
+    position: initial;
+    padding: 0;
+}
+
+.info-event-additional,
 .info-additional {
     font-weight: bold;
     float: right;

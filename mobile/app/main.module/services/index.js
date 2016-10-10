@@ -12,5 +12,4 @@ app.service('connection', require('./connection.service'));
 app.service('authentication', require('./authentication.service'));
 
 // Инициализируем сервисы kudago
-app.service('kudagoService', require('./kudago'));
-
+app.service('kudagoEvents', require('./kudago/events.service'));

@@ -1,9 +1,8 @@
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-WirplController.$inject = ['$scope', 'TDCardDelegate', '$timeout'];
+WirplController.$inject = ['$scope', 'TDCardDelegate', '$timeout', 'kudagoEvents'];
 
-var parser = require('./../parsers/kudago/events');
 var lodash = require('lodash');
 
 module.exports = WirplController;
@@ -11,160 +10,196 @@ module.exports = WirplController;
 /**
  * Контроллер страницы вывода пользователей и мероприятий.
  */
-function WirplController($scope, TDCardDelegate, $timeout) {
+function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
 
-  var cards = [];
+    var cards = [];
 
-  var events;
-
-  resetCurrentEventInfo();
-
-  parser.getAllEvents(1, 'spb', Date.now() / 1000, function (error, result) {
-
-    events = JSON.parse(result).results;
-
-    events.forEach(function (item) {
-
-      var images = item.images;
-
-      var image = lodash.sample(images).image;
-
-      var d = new Date(item.dates[0].start * 1000);
-
-      cards.push({
-                   type: 'event',
-                   city: item.location.name,
-                   image: image,
-                   title: item.short_title,
-                   date:  d.toLocaleString(),
-                   price: item.price,
-                   is_free: item.is_free
-                 });
-
-    });
+    var events;
 
     initialize();
 
-  });
+    resetCurrentEventInfo();
 
-  function initialize() {
+    loadNewCards();
 
-    $scope.cards = {
-      // Master - cards that haven't been discarded
-      master:   Array.prototype.slice.call(cards, 0),
-      // Active - cards displayed on screen
-      active:   Array.prototype.slice.call(cards, 0),
-      // Discards - cards that have been discarded
-      discards: [],
-      // Liked - cards that have been liked
-      liked:    [],
-      // Disliked - cards that have disliked
-      disliked: []
-    };
+    function initialize() {
 
-    // Removes a card from cards.active
-    $scope.cardDestroyed = function (index) {
+        $scope.cards = {
+            // Master - cards that haven't been discarded
+            master:   Array.prototype.slice.call(cards, 0),
+            // Active - cards displayed on screen
+            active:   Array.prototype.slice.call(cards, 0),
+            // Discards - cards that have been discarded
+            discards: [],
+            // Liked - cards that have been liked
+            liked:    [],
+            // Disliked - cards that have disliked
+            disliked: []
+        };
 
-      $scope.cards.active.splice(index, 1);
+        // Removes a card from cards.active
+        $scope.cardDestroyed = function (index) {
 
-      // Обновляем информацию на экране о следующем событии.
-      updateCurrentEventInfo($scope.cards.active[index]);
+            $scope.cards.active.splice(index, 1);
 
-    };
+            var newCard = $scope.cards.active[index];
 
-    // Adds a card to cards.active
-    $scope.addCard = function () {
+            if (newCard) {
 
-      var newCard = cardTypes[0];
+                // Обновляем информацию на экране о следующем событии.
+                updateCurrentEventInfo(newCard);
 
-      updateCurrentEventInfo(newCard);
+            }
 
-      $scope.cards.active.push(angular.extend({}, newCard));
+            if ($scope.cards.active.length == 1) {
 
-    };
+                loadNewCards();
+                
+            }
 
-    // Triggers a refresh of all cards that have not been discarded
-    $scope.refreshCards = function () {
+        };
 
-      // First set $scope.cards to null so that directive reloads
-      $scope.cards.active = null;
+        // Adds a card to cards.active
+        $scope.addCard = function () {
 
-      // Then set cards.active to a new copy of cards.master
-      $timeout(function () {
+            var newCard = cardTypes[0];
 
-        $scope.cards.active = Array.prototype.slice.call($scope.cards.master, 0);
+            updateCurrentEventInfo(newCard);
 
-      });
+            $scope.cards.active.push(angular.extend({}, newCard));
 
-    };
+        };
 
-    // Listens for the 'removeCard' event emitted from within the directive
-    //  - triggered by the onClickTransitionOut click event
-    $scope.$on('removeCard', function (event, element, card) {
+        // Triggers a refresh of all cards that have not been discarded
+        $scope.refreshCards = function (cards) {
 
-      var discarded = $scope.cards.master.splice($scope.cards.master.indexOf(card), 1);
+            // First set $scope.cards to null so that directive reloads
+            $scope.cards.active = null;
 
-      $scope.cards.discards.push(discarded);
+            $scope.cards.master = cards;
 
-    });
+            // Then set cards.active to a new copy of cards.master
+            $timeout(function () {
 
-    // On swipe left
-    $scope.cardSwipedLeft = function (index) {
-      var card = $scope.cards.active[index];
+                $scope.cards.active = Array.prototype.slice.call($scope.cards.master, 0);
 
-      updateCurrentEventInfo(card);
+                // Обновляем информацию о текущей карточке.
+                updateCurrentEventInfo($scope.cards.active[0]);
 
-      $scope.cards.disliked.push(card);
-    };
+            });
 
-    // On swipe right
-    $scope.cardSwipedRight = function (index) {
+        };
 
-      var card = $scope.cards.active[index];
+        // Listens for the 'removeCard' event emitted from within the directive
+        //  - triggered by the onClickTransitionOut click event
+        $scope.$on('removeCard', function (event, element, card) {
 
-      $scope.cards.liked.push(card);
+            var discarded = $scope.cards.master.splice($scope.cards.master.indexOf(card), 1);
 
-    };
+            $scope.cards.discards.push(discarded);
 
-    updateCurrentEventInfo($scope.cards.active[0])
-    $scope.$digest();
+        });
 
-  }
+        // On swipe left
+        $scope.cardSwipedLeft = function (index) {
 
-  function updateCurrentEventInfo(infoForUpdate) {
+            var card = $scope.cards.active[index];
 
-    var MESSAGE_ABOUT_FREE_EVENT = 'бесплатно';
+            $scope.cards.disliked.push(card);
 
-    if ($scope.cards.active) {
+        };
 
-      $scope.eventTitle = infoForUpdate.title;
-      $scope.eventDate = infoForUpdate.date;
-      $scope.price = $scope.is_free ? MESSAGE_ABOUT_FREE_EVENT:
-                                      infoForUpdate.price;
-      $scope.city = infoForUpdate.city;
+        // On swipe right
+        $scope.cardSwipedRight = function (index) {
 
+            var card = $scope.cards.active[index];
 
-    } else {
+            $scope.cards.liked.push(card);
 
-      resetCurrentEventInfo();
+        };
 
     }
 
-  }
+    /**
+     * Обновление текущей информации по карточке.
+     * @param infoForUpdate информация для обновления текста по карточке.
+     */
+    function updateCurrentEventInfo(infoForUpdate) {
 
-  function resetCurrentEventInfo() {
+        var MESSAGE_ABOUT_FREE_EVENT = 'бесплатно';
 
-    $scope.eventTitle = "untitled";
-    $scope.eventDate = "untitled";
-    $scope.price = "untitiled";
-    $scope.city = "untitled";
+        if ($scope.cards.active) {
 
-  }
+            $scope.eventTitle = infoForUpdate.title;
+            $scope.eventDate = infoForUpdate.date;
+            $scope.price = $scope.is_free ? MESSAGE_ABOUT_FREE_EVENT :
+                infoForUpdate.price;
+            $scope.city = infoForUpdate.city;
 
-  function addNewCards(cards) {
 
-    $scope.cards.active.push(cards);
+        } else {
 
-  }
+            resetCurrentEventInfo();
+
+        }
+
+    }
+
+    /**
+     * Сброс информации по карточки в значение по умолчанию.
+     * Это некий сигнал того, что информации для карточки нет.
+     */
+    function resetCurrentEventInfo() {
+
+        $scope.eventTitle = "untitled";
+        $scope.eventDate = "untitled";
+        $scope.price = "untitiled";
+        $scope.city = "untitled";
+
+    }
+
+    /**
+     * Метод загрузки новых карточек.
+     * Вызывается в случае старта контроллера и по мере окончания карточек.
+     */
+    function loadNewCards() {
+
+        kudagoEvents.getPackEvents(function (error, results) {
+
+            if (!error) {
+
+                var cards = [];
+
+                results.forEach(function (item) {
+
+                    var images = item.images;
+
+                    var image = lodash.sample(images).image;
+
+                    // api kudago высылает время в секундах.
+                    var dateOfEvent = new Date(item.dates[0].start * 1000);
+
+                    cards.push({
+                                   type:    'event',
+                                   city:    item.location.name,
+                                   image:   image,
+                                   title:   item.short_title,
+                                   date:    dateOfEvent.toLocaleString(),
+                                   price:   item.price,
+                                   is_free: item.is_free
+                               });
+
+                });
+
+                $scope.refreshCards(cards);
+
+                // Запускаем цикл для отлова изменения в $scope.cards.active.
+                $scope.$digest();
+
+            }
+
+        });
+
+    }
 
 }
