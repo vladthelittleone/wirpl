@@ -8,20 +8,20 @@ var eventsParser = require('./../../parsers/kudago/events');
 
 module.exports = EventsService;
 
+var eventsParseConfig = {
+    eventsCountPerResponse: 2,
+    cities:                 'spb'
+};
+
 function EventsService() {
 
     var packEvents;
 
     var t = {};
 
-    var whoWaitingForPackEvents;
+    var subscriberForPackEvents;
 
     var pageForEvents = 1;
-
-    var eventsParseConfig = {
-        eventsCountPerResponse: 2,
-        cities:                 'spb'
-    };
 
     t.getPackEvents = getPackEvents;
 
@@ -48,13 +48,14 @@ function EventsService() {
         if (packEvents) {
 
             callback(null, packEvents);
+
             packEvents = null;
 
         } else {
 
             // В противном случае, запоминаем того, кто запрашивал события.
             // Он их сразу получит после их выгрузки.
-            whoWaitingForPackEvents = callback;
+            subscriberForPackEvents = callback;
 
         }
 
@@ -76,9 +77,11 @@ function EventsService() {
 
                                       if (!error) {
 
+                                          // TODO
+                                          // Почему сразу не JSON.
                                           var results = JSON.parse(result).results;
 
-                                          callback(null, JSON.parse(result).results);
+                                          callback(null, results);
 
                                           // Если еще имеются события для выдачи на следующих страницах,
                                           // то переходим к следующей странице.
@@ -96,11 +99,11 @@ function EventsService() {
 
         if (!error) {
 
-            if (whoWaitingForPackEvents) {
+            if (subscriberForPackEvents) {
 
-                whoWaitingForPackEvents(null, results);
+                subscriberForPackEvents(null, results);
 
-                whoWaitingForPackEvents = null;
+                subscriberForPackEvents = null;
 
             } else {
 

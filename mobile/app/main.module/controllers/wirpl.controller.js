@@ -14,6 +14,8 @@ function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
 
     var cards = [];
 
+    var thresholdForLoadingNewCards = 0;
+
     var events;
 
     initialize();
@@ -26,13 +28,13 @@ function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
 
         $scope.cards = {
             // Master - cards that haven't been discarded
-            master:   Array.prototype.slice.call(cards, 0),
+            master: Array.prototype.slice.call(cards, 0),
             // Active - cards displayed on screen
-            active:   Array.prototype.slice.call(cards, 0),
+            active: Array.prototype.slice.call(cards, 0),
             // Discards - cards that have been discarded
             discards: [],
             // Liked - cards that have been liked
-            liked:    [],
+            liked: [],
             // Disliked - cards that have disliked
             disliked: []
         };
@@ -51,10 +53,10 @@ function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
 
             }
 
-            if ($scope.cards.active.length == 1) {
+            if ($scope.cards.active.length <= thresholdForLoadingNewCards) {
 
                 loadNewCards();
-                
+
             }
 
         };
@@ -71,22 +73,35 @@ function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
         };
 
         // Triggers a refresh of all cards that have not been discarded
+        // TODO
+        // Добавлять карты к имеющимся, а не затирать!
         $scope.refreshCards = function (cards) {
 
-            // First set $scope.cards to null so that directive reloads
-            $scope.cards.active = null;
+            if (cards) {
 
-            $scope.cards.master = cards;
+                $scope.cards.master = cards;
 
-            // Then set cards.active to a new copy of cards.master
-            $timeout(function () {
+                // First set $scope.cards to null so that directive reloads
+                $scope.cards.active = null;
 
-                $scope.cards.active = Array.prototype.slice.call($scope.cards.master, 0);
+                // Then set cards.active to a new copy of cards.master
+                $timeout(function() {
+                    $scope.cards.active = Array.prototype.slice.call($scope.cards.master, 0);
 
-                // Обновляем информацию о текущей карточке.
-                updateCurrentEventInfo($scope.cards.active[0]);
+                    updateCurrentEventInfo($scope.cards.active[0]);
 
-            });
+                });
+
+                // // Then set cards.active to a new copy of cards.master
+                // $timeout(function () {
+				//
+                //     $scope.cards.active.push(cards);
+				//
+                //     // Обновляем информацию о текущей карточке.
+                //     updateCurrentEventInfo($scope.cards.active[0]);
+				//
+                // });
+            }
 
         };
 
@@ -193,12 +208,20 @@ function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
 
                 $scope.refreshCards(cards);
 
+                updateThresholdForLoadingNewCards(cards.length);
+
                 // Запускаем цикл для отлова изменения в $scope.cards.active.
                 $scope.$digest();
 
             }
 
         });
+
+    }
+
+    function updateThresholdForLoadingNewCards(currentSizeOfCards) {
+
+        thresholdForLoadingNewCards = Math.round(currentSizeOfCards / 2);
 
     }
 
