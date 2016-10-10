@@ -30,6 +30,15 @@ function MainConfig($stateProvider) {
 				}
 			}
 		})
+    .state('main.contact', {
+    url: '/contact',
+    views: {
+      'tab-contact': {
+        templateUrl: 'main.module/templates/contact.html',
+        controller: 'ContactController as ctrl'
+      }
+    }
+  })
 		.state('main.listDetail', {
 			url: '/list/detail',
 			views: {

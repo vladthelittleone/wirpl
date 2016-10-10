@@ -197,3 +197,33 @@ td-card img {
     right: 20px;
     color: #DE5151;
 }
+
+.img-contact{
+  height: 50px;
+  width:  50px;
+  border-radius: 25px;
+}
+
+.contact-img-container{
+  float: left;
+  width: 20%;
+}
+
+.contact-description-container{
+  vertical-align: middle;
+  float: right;
+  width: 80%;
+}
+
+.contact-description-container h2{
+  padding-top: 10px;
+  padding-left: 5px;
+}
+
+.none-margin{
+  margin-bottom: 0;
+}
+
+.contact-list{
+  padding-top: 50px;
+}
