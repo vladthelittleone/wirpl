@@ -1,41 +1,42 @@
+
 /*
  * Change ionic standard style
  */
 body {
-    cursor: url('http://ionicframework.com/img/finger.png'), auto;
+  cursor: url('http://ionicframework.com/img/finger.png'), auto;
 }
 
 .slider {
-    height: 100%;
+  height: 100%;
 }
 
 .slider-slide {
-    padding-top: 80px;
-    color: #000;
-    background-color: #fff;
-    text-align: center;
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-weight: 300;
+  padding-top: 80px;
+  color: #000;
+  background-color: #fff;
+  text-align: center;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
 }
 
 #list {
-    width: 170px;
-    margin: 30px auto;
-    font-size: 20px;
+  width: 170px;
+  margin: 30px auto;
+  font-size: 20px;
 }
 
 #list ol {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 #list ol li {
-    text-align: left;
-    list-style: decimal;
-    margin: 10px 0;
+  text-align: left;
+  list-style: decimal;
+  margin: 10px 0;
 }
 
 .button.ng-hide {
-    display: none;
+  display: none;
 }
 
 /*
@@ -43,187 +44,187 @@ body {
  */
 
 .wirpl-heart {
-    font-size: 10em;
-    margin-top: 30px;
-    color: #b94a4a;
+  font-size: 10em;
+  margin-top: 30px;
+  color: #b94a4a;
 }
 
 .wirpl-plus {
-    font-size: 10em;
-    margin-top: 30px;
-    color: #63b95f;
+  font-size: 10em;
+  margin-top: 30px;
+  color: #63b95f;
 }
 
 .wirpl-shuffle {
-    font-size: 10em;
-    margin-top: 30px;
-    color: #6583b9;
+  font-size: 10em;
+  margin-top: 30px;
+  color: #6583b9;
 }
 
 .wirpl-bottom-button {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .wirpl-auth-slides {
-    padding: 30px;
+  padding: 30px;
 }
 
 .wirpl-auth-sub-title {
-    padding-top: 30px;
+  padding-top: 30px;
 }
 
 .wirpl-auth-button {
-    width: 100%;
-    height: 100%;
-    margin: auto;
+  width: 100%;
+  height: 100%;
+  margin: auto;
 }
 
 .wirpl-auth-view .slider-pager {
-    bottom: 70px;
+  bottom: 70px;
 }
 
 .wirpl-auth-view .bar-positive .button {
-    border-color: #6583b9;
-    background-color: #6583b9;
-    color: #fff;
+  border-color: #6583b9;
+  background-color: #6583b9;
+  color: #fff;
 }
 
 .wirpl-auth-view .bar.bar-positive {
-    border-color: #587bb9;
-    background-color: #6583b9;
+  border-color: #587bb9;
+  background-color: #6583b9;
 }
 
 .wirpl-auth-view .bar.bar-positive.bar-footer {
-    background-image: linear-gradient(180deg, #6583b9, #6583b9 50%, transparent 50%);
+  background-image: linear-gradient(180deg, #6583b9, #6583b9 50%, transparent 50%);
 }
 
 td-card {
-    left: 0;
-    border-radius: 3px;
-    background-color: transparent;
-    width: 100%;
-    height: 80%;
-    position: absolute;
-    padding: 10px;
-    top: 10%;
-    box-shadow: none;
+  left: 0;
+  border-radius: 3px;
+  background-color: transparent;
+  width: 100%;
+  height: 80%;
+  position: absolute;
+  padding: 10px;
+  top: 10%;
+  box-shadow: none;
 }
 
 td-card img {
-    border-radius: 4px 4px 0 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 50% 50%;
+  border-radius: 4px 4px 0 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
 }
 
 .td-card {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
-    width: 100%;
-    height: 100%;
-    background: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+  width: 100%;
+  height: 100%;
+  background: white;
 }
 
 .image {
-    width: 100%;
-    height: 80%;
+  width: 100%;
+  height: 80%;
 }
 
 .wirpl-tabs .tabs {
-    background-size: 0;
-    padding-top: 10px;
+  background-size: 0;
+  padding-top: 10px;
 }
 
 .discard {
-    top: 80%;
-    bottom: inherit;
+  top: 80%;
+  bottom: inherit;
 }
 
 .info-container {
-    width: 100%;
-    height: 20%;
+  width: 100%;
+  height: 20%;
 }
 
 .info-name {
-    font-weight: bold;
-    padding: 0 15px;
-    font-size: 1.4em;
-    top: 80%;
-    right: 5%;
-    position: absolute;
+  font-weight: bold;
+  padding: 0 15px;
+  font-size: 1.4em;
+  top: 80%;
+  right: 5%;
+  position: absolute;
 }
 
 .info-additional {
-    font-weight: bold;
-    float: right;
-    font-size: 0.8em;
-    top: 85%;
-    color: #989898;
-    right: 5%;
-    position: absolute;
-    padding: 0 15px;
+  font-weight: bold;
+  float: right;
+  font-size: 0.8em;
+  top: 85%;
+  color: #989898;
+  right: 5%;
+  position: absolute;
+  padding: 0 15px;
 }
 
 .footer-like-button {
-    color: #69aa58 !important;
+  color: #69aa58 !important;
 }
 
 .footer-dislike-button {
-    color: #DE5151 !important;
+  color: #DE5151 !important;
 }
 
 .wirpl-footer {
-    top: initial !important;
-    bottom: 0;
-    padding-top: 0 !important;
-    margin-bottom: 10px;
+  top: initial !important;
+  bottom: 0;
+  padding-top: 0 !important;
+  margin-bottom: 10px;
 }
 
 .tab-item .footer-like-button,
 .tab-item .footer-dislike-button {
-    font-size: 3.5em !important;
+  font-size: 3.5em !important;
 }
 
 .yes-text {
-    font-weight: bold;
-    top: 20px;
-    left: 20px;
-    color: #69aa58;
+  font-weight: bold;
+  top: 20px;
+  left: 20px;
+  color: #69aa58;
 }
 
 .no-text {
-    font-weight: bold;
-    top: 20px;
-    right: 20px;
-    color: #DE5151;
+  font-weight: bold;
+  top: 20px;
+  right: 20px;
+  color: #DE5151;
 }
 
-.img-contact{
+.img-contact {
   height: 50px;
   width:  50px;
   border-radius: 25px;
 }
 
-.contact-img-container{
+.contact-img-container {
   float: left;
   width: 20%;
 }
 
-.contact-description-container{
+.contact-description-container {
   vertical-align: middle;
   float: right;
   width: 80%;
 }
 
-.contact-description-container h2{
+.contact-description-container h2 {
   padding-top: 10px;
   padding-left: 5px;
 }
 
-.none-margin{
+.none-margin {
   margin-bottom: 0;
 }
 
-.contact-list{
+.contact-list {
   padding-top: 50px;
 }
