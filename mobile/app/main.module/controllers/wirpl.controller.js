@@ -1,7 +1,7 @@
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-WirplController.$inject = ['$scope', 'TDCardDelegate', '$timeout'];
+WirplController.$inject = ['$scope', 'TDCardDelegate', '$timeout', 'connection'];
 
 module.exports = WirplController;
 
@@ -19,7 +19,6 @@ function WirplController ($scope, TDCardDelegate, $timeout) {
 		{ image: 'http://c4.staticflickr.com/4/3937/19072713775_156a560e09_n.jpg' },
 		{ image: 'http://c1.staticflickr.com/1/267/19067097362_14d8ed9389_n.jpg' }
 	];
-
 
 	$scope.cards = {
 		// Master - cards that haven't been discarded

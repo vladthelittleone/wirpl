@@ -99,7 +99,7 @@ gulp.task('environment', function () {
   return gulp.src('app/*/constants/*const.js')
     .pipe(
       $.inject(
-        gulp.src('app/main/constants/env-' + options.env + '.json'),
+        gulp.src('app/main.module/constants/env-' + options.env + '.json'),
         {
           starttag: '/*inject-env*/',
           endtag: '/*endinject*/',
