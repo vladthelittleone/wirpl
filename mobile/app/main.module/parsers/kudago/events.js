@@ -74,12 +74,15 @@ function Events() {
      * В данный метод включены только 2 поля для фильтрации (возможно расширить).
      * @page номер страницы по выдачи событий (kudago разбивает список событий, а их большое
      *       количество, на страницы). Нумерация страниц идет с 1.
+     * @param page
+     * @param eventsCountPerResponse число событий для выдачи в ответе (МАКСИМАЛЬНОЕ ЗНАЧЕНИЕ 100).
      * @param location место проведения всех событий.
      * @param actualSinceInSeconds включить в выдачу только те события,
      *                                  которые начались после указанного момента времени (в СЕКУНДАХ).
      * @param callback метод обратного вызова для получения списка всех событий.
      */
     function getAllEvents(page,
+                          eventsCountPerResponse,
                           location,
                           actualSinceInSeconds,
                           callback) {
@@ -87,10 +90,11 @@ function Events() {
         httpRequest({
                         url:    urls.events,
                         qs:     {
-                            page_size:    EVENTS_COUNT_PER_RESPONSE,
+                            page_size:    eventsCountPerResponse,
                             page:         preparePageNumberValue(page),
                             actual_since: actualSinceInSeconds,
                             location:     location,
+                            lang: 'ru',
                             // Поля, которые хотим получить о каждом событии в ответе.
                             fields:       'id,' +
                                           'dates,' +
@@ -104,7 +108,10 @@ function Events() {
                                           'location,' +
                                           'price,' +
                                           'is_free,' +
-                                          'images'
+                                          'images',
+                          // Просим kudago выслать более подробную информацию о location
+                          // (по умолчанию там только поле slug).
+                          expand: 'location'
                         },
                         method: 'GET'
                     },

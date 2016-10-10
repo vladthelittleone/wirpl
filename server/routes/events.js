@@ -10,7 +10,7 @@ const logger = require('./../utils/log')(module);
 
 const router = express.Router();
 
-const kudagoEventsParser = require('./../parsers/kudago/events');
+const kudagoEventsParser = require('./../../mobile/app/main/kudago/events');
 
 module.exports = router;
 
