@@ -5,113 +5,90 @@
  */
 
 var eventsParser = require('./../../parsers/kudago/events');
+var lodash = require('lodash');
 
 module.exports = EventsService;
 
-var eventsParseConfig = {
+var eventsConfig = {
     eventsCountPerResponse: 2,
     cities:                 'spb'
 };
 
 function EventsService() {
 
-    var packEvents;
-
     var t = {};
 
-    var subscriberForPackEvents;
+    var cardsType = 'kudago.events';
 
     var pageForEvents = 1;
 
-    t.getPackEvents = getPackEvents;
-
-    requireNextPackEvents(updatePackEvents);
+    t.requirePackEvents = requirePackEvents;
+    t.cardsType = cardsType;
 
     return t;
 
     /**
-     * Метод возврата текущего пака событий и затребования выгрузки следующего.
-     * Так как выгрузка следующего пака прроисходит асинхронно, безусловно следующий,
-     * сразу за текущим, вызов getPackEvents может вернуть неизмененное состояние
-     * packEvents.
-     * Но по логике работы нашего приложения - периода между запросами значения packEvents
-     * должно хватать на выгрузку нового пака.
-     * @returns {*}
-     */
-    function getPackEvents(callback) {
-
-        // Требуем выгрузку следующего пака событий.
-        requireNextPackEvents(updatePackEvents);
-
-        // Если текущий пак событий определен - передаем его сразу как результат
-        // и очищаем. Это будет служить флагом того, что этот пак был выдан.
-        if (packEvents) {
-
-            callback(null, packEvents);
-
-            packEvents = null;
-
-        } else {
-
-            // В противном случае, запоминаем того, кто запрашивал события.
-            // Он их сразу получит после их выгрузки.
-            subscriberForPackEvents = callback;
-
-        }
-
-    }
-
-    /**
      * Метод выгрузки следующего пака событий с API kudago.
      */
-    function requireNextPackEvents(callback) {
+    function requirePackEvents(callback) {
 
         // Начинаем запрос событий с текущего времени (в секундах).
         var currentTimeInSeconds = Date.now() / 1000;
 
         eventsParser.getAllEvents(pageForEvents,
-                                  eventsParseConfig.eventsCountPerResponse,
-                                  eventsParseConfig.cities,
+                                  eventsConfig.eventsCountPerResponse,
+                                  eventsConfig.cities,
                                   currentTimeInSeconds,
-                                  function (error, result) {
+                                  function (error, response) {
 
                                       if (!error) {
 
+                                          // Забираем массив с информацией по событиям.
                                           // TODO
-                                          // Почему сразу не JSON.
-                                          var results = JSON.parse(result).results;
+                                          // Почему сразу не JSON ?
+                                          var resultsArr = JSON.parse(response).results;
 
-                                          callback(null, results);
+                                          wrapResults(resultsArr);
+
+                                          callback(null, cardsType, resultsArr);
 
                                           // Если еще имеются события для выдачи на следующих страницах,
                                           // то переходим к следующей странице.
                                           // В противном случае, возвращаемся к первой странице.
-                                          pageForEvents = results.next !== null ? pageForEvents + 1 :
-                                              1;
+                                          pageForEvents = response.next !== null ? pageForEvents + 1 :
+                                                          1;
+
                                       }
 
                                   });
 
-
     }
 
-    function updatePackEvents(error, results) {
+    /**
+     * Оборачиваем результаты дополнительными полями, которые преимущественно
+     * будут исользовать в шаблоне.
+     * К примеру, представляем дату в строковом формате. Напрямую включаем через отдельное поле
+     * url на картинку (так как их приходит несколько, мы отбираем случано любую из них). И т.д.
+     * @param results
+     */
+    function wrapResults(resultsArr) {
 
-        if (!error) {
+        resultsArr.forEach(function (item) {
 
-            if (subscriberForPackEvents) {
+            // api kudago высылает время в секундах.
+            // TODO
+            // Дат может быть несколько (дата про ведения события известна
+            // по нескольким дням).
+            var dateOfEvent = new Date(item.dates[0].start * 1000);
 
-                subscriberForPackEvents(null, results);
+            var images = item.images;
+            var image = lodash.sample(images).image;
 
-                subscriberForPackEvents = null;
+            item['date'] = dateOfEvent.toLocaleString();
+            item['image'] = image;
+            item['type'] = cardsType;
 
-            } else {
-
-                packEvents = results;
-
-            }
-
-        }
+        });
 
     }
 

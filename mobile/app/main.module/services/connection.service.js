@@ -9,7 +9,7 @@ module.exports = Connection;
  */
 var links = {
 
-    login:    '/login/vk',
+    login:    '/login/vk'
 };
 
 /**

@@ -1,7 +1,7 @@
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-WirplController.$inject = ['$scope', 'TDCardDelegate', '$timeout', 'kudagoEvents'];
+WirplController.$inject = ['$scope', 'TDCardDelegate', '$timeout', 'cardsManager'];
 
 var lodash = require('lodash');
 
@@ -10,19 +10,15 @@ module.exports = WirplController;
 /**
  * Контроллер страницы вывода пользователей и мероприятий.
  */
-function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
+function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
 
     var cards = [];
 
-    var thresholdForLoadingNewCards = 0;
-
-    var events;
-
     initialize();
 
-    resetCurrentEventInfo();
+    initializeCardManager();
 
-    loadNewCards();
+    resetCurrentEventInfo();
 
     function initialize() {
 
@@ -53,12 +49,6 @@ function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
 
             }
 
-            if ($scope.cards.active.length <= thresholdForLoadingNewCards) {
-
-                loadNewCards();
-
-            }
-
         };
 
         // Adds a card to cards.active
@@ -74,7 +64,7 @@ function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
 
         // Triggers a refresh of all cards that have not been discarded
         // TODO
-        // Добавлять карты к имеющимся, а не затирать!
+        // Добавлять карты к имеющимся, а не затирать!!!!
         $scope.refreshCards = function (cards) {
 
             if (cards) {
@@ -86,21 +76,13 @@ function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
 
                 // Then set cards.active to a new copy of cards.master
                 $timeout(function() {
+
                     $scope.cards.active = Array.prototype.slice.call($scope.cards.master, 0);
 
                     updateCurrentEventInfo($scope.cards.active[0]);
 
                 });
 
-                // // Then set cards.active to a new copy of cards.master
-                // $timeout(function () {
-				//
-                //     $scope.cards.active.push(cards);
-				//
-                //     // Обновляем информацию о текущей карточке.
-                //     updateCurrentEventInfo($scope.cards.active[0]);
-				//
-                // });
             }
 
         };
@@ -120,6 +102,8 @@ function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
 
             var card = $scope.cards.active[index];
 
+            cardsManager.cardSwiped(card.type);
+
             $scope.cards.disliked.push(card);
 
         };
@@ -128,6 +112,8 @@ function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
         $scope.cardSwipedRight = function (index) {
 
             var card = $scope.cards.active[index];
+
+            cardsManager.cardSwiped(card.type);
 
             $scope.cards.liked.push(card);
 
@@ -177,51 +163,22 @@ function WirplController($scope, TDCardDelegate, $timeout, kudagoEvents) {
      * Метод загрузки новых карточек.
      * Вызывается в случае старта контроллера и по мере окончания карточек.
      */
-    function loadNewCards() {
+    function pushCards(error, cards) {
 
-        kudagoEvents.getPackEvents(function (error, results) {
+        if(!error) {
 
-            if (!error) {
+            $scope.refreshCards(cards);
 
-                var cards = [];
-
-                results.forEach(function (item) {
-
-                    var images = item.images;
-
-                    var image = lodash.sample(images).image;
-
-                    // api kudago высылает время в секундах.
-                    var dateOfEvent = new Date(item.dates[0].start * 1000);
-
-                    cards.push({
-                                   type:    'event',
-                                   city:    item.location.name,
-                                   image:   image,
-                                   title:   item.short_title,
-                                   date:    dateOfEvent.toLocaleString(),
-                                   price:   item.price,
-                                   is_free: item.is_free
-                               });
-
-                });
-
-                $scope.refreshCards(cards);
-
-                updateThresholdForLoadingNewCards(cards.length);
-
-                // Запускаем цикл для отлова изменения в $scope.cards.active.
-                $scope.$digest();
-
-            }
-
-        });
+            // Запускаем цикл для отлова изменения в $scope.cards.active.
+            $scope.$digest();
+        }
 
     }
 
-    function updateThresholdForLoadingNewCards(currentSizeOfCards) {
+    function initializeCardManager() {
 
-        thresholdForLoadingNewCards = Math.round(currentSizeOfCards / 2);
+        cardsManager.registerPushCardsMethod(pushCards);
+        cardsManager.start();
 
     }
 
