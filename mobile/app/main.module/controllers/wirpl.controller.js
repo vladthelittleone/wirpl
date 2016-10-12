@@ -12,110 +12,81 @@ module.exports = WirplController;
  */
 function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
 
-    var cards = [];
+    var newCardsForActive = [];
 
     initialize();
 
     initializeCardManager();
 
-    resetCurrentEventInfo();
+    resetCurrentCardInfo();
 
     function initialize() {
 
         $scope.cards = {
-            // Master - cards that haven't been discarded
-            master: Array.prototype.slice.call(cards, 0),
-            // Active - cards displayed on screen
-            active: Array.prototype.slice.call(cards, 0),
-            // Discards - cards that have been discarded
-            discards: [],
-            // Liked - cards that have been liked
-            liked: [],
-            // Disliked - cards that have disliked
+            // Карты, которые будут показаны на экране.
+            active:   [],
+            // Карты, которые лайкнул пользователь.
+            liked:    [],
+            // Карты, которые дизлайкнул пользователь.
             disliked: []
         };
 
-        // Removes a card from cards.active
+        // Метод обработки уничтожения карты TDCards'ом из колоды cards.active.
+        // В данном методе мы переходим к следующей карте, а также смотрим,
+        // имеются ли новые для добавления в колоду активных.
+        // P.S. ВНИМАНИЕ.
+        // Для ПОСЛЕДНЕЙ карты в колоде метод не вызывается!
         $scope.cardDestroyed = function (index) {
 
             $scope.cards.active.splice(index, 1);
 
+            // Если есть новые карточки для добавления в active.
+            if (newCardsForActive.length) {
+
+                // TODO
+                // Ангуляр не отлавливает!.
+                updateActiveCards(newCardsForActive);
+
+            }
+
             var newCard = $scope.cards.active[index];
 
+            // Если определена новая карта - обновляем событие о ней.
             if (newCard) {
 
                 // Обновляем информацию на экране о следующем событии.
-                updateCurrentEventInfo(newCard);
+                updateCurrentCardInfo(newCard);
 
             }
 
         };
 
-        // Adds a card to cards.active
-        $scope.addCard = function () {
-
-            var newCard = cardTypes[0];
-
-            updateCurrentEventInfo(newCard);
-
-            $scope.cards.active.push(angular.extend({}, newCard));
-
-        };
-
-        // Triggers a refresh of all cards that have not been discarded
-        // TODO
-        // Добавлять карты к имеющимся, а не затирать!!!!
-        $scope.refreshCards = function (cards) {
-
-            if (cards) {
-
-                $scope.cards.master = cards;
-
-                // First set $scope.cards to null so that directive reloads
-                $scope.cards.active = null;
-
-                // Then set cards.active to a new copy of cards.master
-                $timeout(function() {
-
-                    $scope.cards.active = Array.prototype.slice.call($scope.cards.master, 0);
-
-                    updateCurrentEventInfo($scope.cards.active[0]);
-
-                });
-
-            }
-
-        };
-
-        // Listens for the 'removeCard' event emitted from within the directive
-        //  - triggered by the onClickTransitionOut click event
-        $scope.$on('removeCard', function (event, element, card) {
-
-            var discarded = $scope.cards.master.splice($scope.cards.master.indexOf(card), 1);
-
-            $scope.cards.discards.push(discarded);
-
-        });
-
-        // On swipe left
+        // Срабатывает при перелистывании карты влево.
         $scope.cardSwipedLeft = function (index) {
 
             var card = $scope.cards.active[index];
-
-            cardsManager.cardSwiped(card.type);
 
             $scope.cards.disliked.push(card);
 
         };
 
-        // On swipe right
+        // Срабатывает при перелистывании карты вправо.
         $scope.cardSwipedRight = function (index) {
 
             var card = $scope.cards.active[index];
 
-            cardsManager.cardSwiped(card.type);
-
             $scope.cards.liked.push(card);
+
+        };
+
+        // Обрабатываем момент "перелистывания" карточки.
+        // В данном методе нам не важно в какую сторону пользователь
+        // "откинул" карточку. Важен лишь сам факт ее перелистывания.
+        $scope.cardSwiped = function (index) {
+
+            var card = $scope.cards.active[index];
+
+            cardsManager.cardSwiped(card.type);
 
         };
 
@@ -125,24 +96,34 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
      * Обновление текущей информации по карточке.
      * @param infoForUpdate информация для обновления текста по карточке.
      */
-    function updateCurrentEventInfo(infoForUpdate) {
+    function updateCurrentCardInfo(infoForUpdate) {
 
         var MESSAGE_ABOUT_FREE_EVENT = 'бесплатно';
 
-        if ($scope.cards.active) {
+        if (infoForUpdate) {
 
             $scope.eventTitle = infoForUpdate.title;
             $scope.eventDate = infoForUpdate.date;
             $scope.price = $scope.is_free ? MESSAGE_ABOUT_FREE_EVENT :
-                infoForUpdate.price;
+                           infoForUpdate.price;
             $scope.city = infoForUpdate.city;
 
 
         } else {
 
-            resetCurrentEventInfo();
+            resetCurrentCardInfo();
 
         }
+
+    }
+
+    /**
+     * Метод вызывается для добавления новых карт в $scope.cards.active.
+     * После добавления новых карт, метод случайным образом их перетасовывает.
+     */
+    function updateActiveCards(newCards) {
+
+        $scope.cards.active = lodash.shuffle(lodash.concat($scope.cards.active, newCards));
 
     }
 
@@ -150,7 +131,7 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
      * Сброс информации по карточки в значение по умолчанию.
      * Это некий сигнал того, что информации для карточки нет.
      */
-    function resetCurrentEventInfo() {
+    function resetCurrentCardInfo() {
 
         $scope.eventTitle = "untitled";
         $scope.eventDate = "untitled";
@@ -160,19 +141,58 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
     }
 
     /**
-     * Метод загрузки новых карточек.
-     * Вызывается в случае старта контроллера и по мере окончания карточек.
+     * Метод добавления новых карточек в wirpl.controller менеджером карточек.
      */
-    function pushCards(error, cards) {
+    function pushCards(error, newCards) {
 
-        if(!error) {
+        // TODO
+        // Не забыть про перезагрузку директивы при поступлении ПЕРВЫХ карт.
+        if (!error) {
 
-            $scope.refreshCards(cards);
+            // Если в колоде active еще нет карт, то добавляем их сразу.
+            // В противном случае запоминаем новую порцию карт и сразу не добавляем,
+            // так как в данный момент пользователь просматривает карты.
+            if (!$scope.cards.active.length) {
 
-            // Запускаем цикл для отлова изменения в $scope.cards.active.
-            $scope.$digest();
+                initializeActiveCards(newCards);
+
+            } else {
+
+                newCardsForActive = lodash.concat(newCardsForActive, newCards);
+
+            }
+
         }
 
+    }
+
+    /**
+     * Метод вызывать ОБЯЗАТЕЛЬНО при появлении карт для добавления в ПУСТУЮ колоду active
+     * (именно пустую. Т.е. это либо начало работы контроллера, либо пользователь пролистал
+     * ВСЕ карты в колоде active).
+     * Вся логика работы кода, которая представлена в данном методе, заключена
+     * в особенности работы директивы tdCards.
+     * Чтобы она применила стили анимации ко всем карточкам в active,
+     * ее необходимо ПЕРЕЗАГРУЗИТЬ. Делается это обнулением ссылки на active
+     * карты из scope.cards (см. на шаблон wirpl).
+     */
+    function initializeActiveCards(cards) {
+
+        // TODO
+        // Не забыть про перетасовку карт!
+        
+        $scope.cards.active = null;
+
+        // Обращаем внимание ангуляр на $scope.cards.active.
+        $scope.$digest();
+
+        $timeout(function() {
+
+            $scope.cards.active = cards;
+
+            updateCurrentCardInfo($scope.cards.active[0]);
+
+        });
     }
 
     function initializeCardManager() {
