@@ -204,7 +204,7 @@ function CardsManager(kudagoEvents) {
 
         // Если мы достигли нуля в счетчике перелистывания, осуществляем
         // выгрузку нового пака.
-        if (!cardSwipedCounter) {
+        if (!cardSwipedCounter[type]) {
 
             getNextCardsPack(type, pushMethod);
 

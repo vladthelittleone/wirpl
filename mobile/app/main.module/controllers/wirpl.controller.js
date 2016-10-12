@@ -23,15 +23,11 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
     function initialize() {
 
         $scope.cards = {
-            // Master - cards that haven't been discarded
-            master: Array.prototype.slice.call(cards, 0),
-            // Active - cards displayed on screen
-            active: Array.prototype.slice.call(cards, 0),
-            // Discards - cards that have been discarded
-            discards: [],
-            // Liked - cards that have been liked
-            liked: [],
-            // Disliked - cards that have disliked
+            // Карточки, которые будут отображаться на экране (последовательно).
+            active:   [],
+            // Карточки, которые лайкнули.
+            liked:    [],
+            // Карточки, которые дизлайкнули.
             disliked: []
         };
 
@@ -51,17 +47,6 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
 
         };
 
-        // Adds a card to cards.active
-        $scope.addCard = function () {
-
-            var newCard = cardTypes[0];
-
-            updateCurrentEventInfo(newCard);
-
-            $scope.cards.active.push(angular.extend({}, newCard));
-
-        };
-
         // Triggers a refresh of all cards that have not been discarded
         // TODO
         // Добавлять карты к имеющимся, а не затирать!!!!
@@ -69,15 +54,10 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
 
             if (cards) {
 
-                $scope.cards.master = cards;
-
-                // First set $scope.cards to null so that directive reloads
-                $scope.cards.active = null;
-
                 // Then set cards.active to a new copy of cards.master
-                $timeout(function() {
+                $timeout(function () {
 
-                    $scope.cards.active = Array.prototype.slice.call($scope.cards.master, 0);
+                    $scope.cards.active = lodash.concat($scope.cards.active, cards);
 
                     updateCurrentEventInfo($scope.cards.active[0]);
 
@@ -86,16 +66,6 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
             }
 
         };
-
-        // Listens for the 'removeCard' event emitted from within the directive
-        //  - triggered by the onClickTransitionOut click event
-        $scope.$on('removeCard', function (event, element, card) {
-
-            var discarded = $scope.cards.master.splice($scope.cards.master.indexOf(card), 1);
-
-            $scope.cards.discards.push(discarded);
-
-        });
 
         // On swipe left
         $scope.cardSwipedLeft = function (index) {
@@ -119,7 +89,21 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
 
         };
 
+        // Общий метод вызова при перелистывании карточки.
+        // В случаях, когда нам нет необходимости различать, куда именно карточка
+        // была отброшена.
+        $scope.cardSwiped = function (index) {
+
+            console.log('swiped');
+
+            var card = $scope.cards.active[index];
+
+            cardsManager.cardSwiped(card.type);
+
+        }
+
     }
+
 
     /**
      * Обновление текущей информации по карточке.
@@ -129,12 +113,12 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
 
         var MESSAGE_ABOUT_FREE_EVENT = 'бесплатно';
 
-        if ($scope.cards.active) {
+        if (infoForUpdate) {
 
             $scope.eventTitle = infoForUpdate.title;
             $scope.eventDate = infoForUpdate.date;
             $scope.price = $scope.is_free ? MESSAGE_ABOUT_FREE_EVENT :
-                infoForUpdate.price;
+                           infoForUpdate.price;
             $scope.city = infoForUpdate.city;
 
 
@@ -165,9 +149,9 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
      */
     function pushCards(error, cards) {
 
-        if(!error) {
+        if (!error) {
 
-            $scope.refreshCards(cards);
+            addCardsAsActive(cards);
 
             // Запускаем цикл для отлова изменения в $scope.cards.active.
             $scope.$digest();
@@ -179,6 +163,12 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
 
         cardsManager.registerPushCardsMethod(pushCards);
         cardsManager.start();
+
+    }
+
+    function addCardsAsActive(cards) {
+
+        $scope.cards.active = lodash.concat($scope.cards.active, cards);
 
     }
 
