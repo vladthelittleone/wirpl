@@ -10,7 +10,7 @@ var lodash = require('lodash');
 module.exports = EventsService;
 
 var eventsConfig = {
-    eventsCountPerResponse: 2,
+    eventsCountPerResponse: 10,
     cities:                 'spb'
 };
 
