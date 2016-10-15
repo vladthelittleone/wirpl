@@ -25,13 +25,13 @@ module.exports = WirplController;
 function WirplController($scope, $timeout, cardsManager) {
 
     // Очередь карточек на добавление в колоду активных.
-    var newCardsForActive = [];
+    var newCards = [];
 
     initializeScope();
 
     initializeCardManager();
 
-	/**
+    /**
      * Метод инициализации $scope необходимыми свойствами
      * и методами для корректного отображения карточек на экране.
      */
@@ -56,8 +56,9 @@ function WirplController($scope, $timeout, cardsManager) {
 
             $scope.cards.active.splice(index, 1);
 
-            // Псле удаоения карты, проверяем, быть может имеются новые карты для добавления.
-            checkForNewCards();
+            // Псле удаления карты, пытаемся добавить новые карты.
+            // Быть может они уже поступили от менеджера карточек.
+            tryAddNewCards();
 
         };
 
@@ -95,6 +96,10 @@ function WirplController($scope, $timeout, cardsManager) {
     /**
      * Метод вызывается для добавления новых карт в $scope.cards.active.
      * После добавления новых карт, метод случайным образом их перемешивает.
+     * Сам принцип работы метода опирается на нюанс директивы td-cards.
+     * Необходимо ее "перегружать" при каком-либо изменении в $scope.cards.active,
+     * дабы все необходимые стили анимации были применены для каждой карты
+     * в колоде активных.
      */
     function updateActiveCards(newCards) {
 
@@ -116,38 +121,40 @@ function WirplController($scope, $timeout, cardsManager) {
 
     /**
      * Метод проверки наличия новых карт для добавления в колоду активных.
-     * Метод опирается на проверку состояния переменной newCardsForActive.
+     * Логику проверки наличия новых карт, их добавление в колоду активных и их
+     * последующую очистку было решено инкапсулировать в отдельный метод.
      */
-    function checkForNewCards() {
+    function tryAddNewCards() {
 
         //Если есть новые карточки для добавления.
-        if (newCardsForActive.length) {
+        if (newCards.length) {
 
-            updateActiveCards(newCardsForActive);
+            updateActiveCards(newCards);
 
             // очищаем добавленные карты.
-            newCardsForActive = [];
+            newCards = [];
 
         }
     }
 
     /**
-     * Метод для добавления новых карт менеджером карточек.
+     * Метод постанова на учет контроллером новой порции карточек.
+     * Данный метод позволяет быть использованным в качестве коллбэка.
+     * Поэтому позволяет задать первым параметром описание ошибочной ситуации.
      */
-    function pushCards(error, newCards) {
+    function pushCards(error, cardsForPush) {
 
         if (!error) {
 
-            // Если в колоде active нет карт (к примеру, приложение только запустили), то добавляем их сразу.
-            // В противном случае, запоминаем новую порцию карт и сразу НЕ добавляем,
-            // так как в данный момент пользователь еще просматривает карты.
+            newCards = lodash.concat(newCards, cardsForPush);
+
+            // Если на данный момент в колоде активных отсутствуют карты,
+            // то добавляем их сразу. В противном случае НЕ добавляем, так
+            // как пользователь сейчас просматривает карту и нарушать
+            // состояние $scope.cards.active пока не имеет смысла.
             if (!$scope.cards.active || !$scope.cards.active.length) {
 
-                updateActiveCards(newCards);
-
-            } else {
-
-                newCardsForActive = lodash.concat(newCardsForActive, newCards);
+                tryAddNewCards();
 
             }
 
@@ -155,7 +162,7 @@ function WirplController($scope, $timeout, cardsManager) {
 
     }
 
-	/**
+    /**
      * Метод инициализации менеджера карточек с целью оповещения его
      * о нашей готовности принимать карточки для отображения.
      */

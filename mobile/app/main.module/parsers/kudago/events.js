@@ -44,9 +44,7 @@ var urls = {
 module.exports = Events();
 
 function Events() {
-
-    // 100 - максимальное число, которое позволяет высылать API в версии 1.3
-    var EVENTS_COUNT_PER_RESPONSE = 100;
+    
     // Начальное значение номера страницы просмотра событий.
     var INIT_PAGE_NUMBER_VALUE = 1;
 

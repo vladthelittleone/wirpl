@@ -1,6 +1,6 @@
 'use strict';
 
-Connection.$inject = ['$http'];
+Connection.$inject = ['$http', 'config'];
 
 module.exports = Connection;
 
@@ -8,29 +8,28 @@ module.exports = Connection;
  * Ссылки на REST API
  */
 var links = {
-
-    login:    '/login/vk'
+    
+    findRandomUser: '/find/random'
+    
 };
 
 /**
- * Created by vaimer on 28.09.16.
+ * @since 28.09.16
+ * @author Skurishin Vladislav
  */
-
-function Connection($http) {
-
-  var that = {};
-
-  that.login = login;
-
-  return that;
-
-
-  function login(success, error) {
-
-    $http.get(links.login)
-      .success(success)
-      .error(error);
-
-  }
-
+function Connection ($http, config) {
+    
+    var that = {};
+    
+    that.findRandomUser = findRandomUser;
+    
+    return that;
+    
+    function findRandomUser (callback) {
+        
+        $http.get(config.buildUrl(links.findRandomUser))
+            .then(callback);
+        
+    }
+    
 }

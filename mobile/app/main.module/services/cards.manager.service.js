@@ -1,10 +1,5 @@
 'use strict';
 
-CardsManager.$inject = ['kudagoEvents'];
-
-module.exports = CardsManager;
-
-
 /**
  * Основной задачей данного сервиса явялется реализация загрузки и выдачи карточек
  * заданного типа.
@@ -13,14 +8,20 @@ module.exports = CardsManager;
  * Сервис реализует выгрузку карточек по требованию с последующим сохранением результата такой выгрузки
  * для моментальной выдачи в следующий раз. То есть, например, когда пользователь запрашивает карточки в
  * самый первый раз, его ожидает уже ВЫГРУЖЕННЫЙ раннее пак карт. После такого запроса, сервис осуществит выгрузку
- * следующей порции (пак) карточек, повторного возврата без ожидания. По крайней мере он будет пытаться сделать это.
+ * следующей порции (пак) карточек и возвратит ее по требованию без ожидания. По крайней мере,
+ * он будет пытаться сделать это.
  * Безусловно, возможны исключительные ситуации, когда до следующей выдачи пользователю так и не удалось выгрузить
  * новую порцию карточек. В таком случае, пользователь будет восприниматься как подписчик на событие выгрузки
  * карточек.
- * Каждая просьба получения карточек выполняется передачей управления коллбэку.
+ * Каждая просьба получения карточек выполняется передачей управления указанному (в качестве параметра
+ * при получении) коллбэку.
  *
  * Created by iretd on 11.10.16.
  */
+
+CardsManager.$inject = ['kudagoEvents'];
+
+module.exports = CardsManager;
 
 function CardsManager(kudagoEvents) {
 
@@ -108,7 +109,7 @@ function CardsManager(kudagoEvents) {
      */
     function getNextCardsPack(type, callback) {
 
-        uploadingNecessaryPackCards(type);
+        unloadingNecessaryPackCards(type);
 
         // Если текущий пак событий определен - передаем его сразу как результат
         // и очищаем. Это будет служить флагом того, что этот пак был выдан.
@@ -130,11 +131,7 @@ function CardsManager(kudagoEvents) {
 
     function addSubscriber(type, subscriber) {
 
-        if (!subscribersForCardsPack[type]) {
-
-            subscribersForCardsPack[type] = [];
-
-        }
+        subscribersForCardsPack[type] = subscribersForCardsPack[type] || [];
 
         subscribersForCardsPack[type].push(subscriber);
 
@@ -216,7 +213,7 @@ function CardsManager(kudagoEvents) {
      * Требуем выгрузку следующего пака событий.
      * @param type тип карт, которые нужно выгружать.
      */
-    function uploadingNecessaryPackCards(type) {
+    function unloadingNecessaryPackCards(type) {
 
         // Требуем выгрузку следующего пака событий.
         var unloadingCards = unloadingCardsInfo[type];

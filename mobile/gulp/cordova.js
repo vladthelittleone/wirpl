@@ -75,8 +75,7 @@ gulp.task('serve-livereload', ['cordova-prepare'], function (done) {
     patcher.patchConfigXml(urls.get('external'));
     done();
 
-    // start linting and watching
-    //gulp.start('linting');
+    // start watching
     gulp.watch(paths.watchFiles, function (event) {
       console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
       if (event.type === 'changed') {
@@ -91,7 +90,7 @@ gulp.task('serve-livereload', ['cordova-prepare'], function (done) {
     gulp.watch(paths.scssFiles, ['styles']);
     // watch for changes in environment files and new config files
     gulp.watch([
-      'app/main/constants/env-*.json',
+      'app/main.module/constants/env-*.json',
       'app/*/constants/*config-const.js'
     ], ['environment']);
 
