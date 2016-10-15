@@ -1,7 +1,7 @@
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-WirplController.$inject = ['$scope', 'TDCardDelegate', '$timeout', 'cardsManager'];
+WirplController.$inject = ['$scope', '$timeout', 'cardsManager'];
 
 var lodash = require('lodash');
 
@@ -9,18 +9,33 @@ module.exports = WirplController;
 
 /**
  * Контроллер страницы вывода пользователей и мероприятий.
+ * Контроллер получает карточки для отображения от cards.manager.
+ * Основное требования контроллера для ЛЮБОЙ карты (по крайней мере,
+ * для того, чтобы она должным образом отображалась пользователю) это
+ * определять следующие поля:
+ * - image. Url на картинку карточки;
+ * - type. Тип карточки;
+ * - head;
+ * - title;
+ * - body;
+ * - additional.
+ * Все перечисленные поля определяются сервисом каждого типа карточек самостоятельно.
+ * Но это контроллера уже не касается :)
  */
-function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
+function WirplController($scope, $timeout, cardsManager) {
 
+    // Очередь карточек на добавление в колоду активных.
     var newCardsForActive = [];
 
-    initialize();
+    initializeScope();
 
     initializeCardManager();
 
-    resetCurrentCardInfo();
-
-    function initialize() {
+	/**
+     * Метод инициализации $scope необходимыми свойствами
+     * и методами для корректного отображения карточек на экране.
+     */
+    function initializeScope() {
 
         $scope.cards = {
             // Карты, которые будут показаны на экране.
@@ -34,32 +49,15 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
         // Метод обработки уничтожения карты TDCards'ом из колоды cards.active.
         // В данном методе мы переходим к следующей карте, а также смотрим,
         // имеются ли новые для добавления в колоду активных.
+        // TODO
         // P.S. ВНИМАНИЕ.
         // Для ПОСЛЕДНЕЙ карты в колоде метод не вызывается!
         $scope.cardDestroyed = function (index) {
 
             $scope.cards.active.splice(index, 1);
 
-            // Если есть новые карточки для добавления в active.
-            if (newCardsForActive.length) {
-
-                // TODO
-                // Ангуляр не отлавливает!.
-                // Сопоставить с иницализацией active, потому как логика одинаковая!
-                // Там еще перемешивать.
-                updateActiveCards(newCardsForActive);
-
-            }
-
-            var newCard = $scope.cards.active[index];
-
-            // Если определена новая карта - обновляем событие о ней.
-            if (newCard) {
-
-                // Обновляем информацию на экране о следующем событии.
-                updateCurrentCardInfo(newCard);
-
-            }
+            // Псле удаоения карты, проверяем, быть может имеются новые карты для добавления.
+            checkForNewCards();
 
         };
 
@@ -94,70 +92,58 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
 
     }
 
-
-    /**
-     * Обновление текущей информации по карточке.
-     * @param infoForUpdate информация для обновления текста по карточке.
-     */
-    function updateCurrentCardInfo(infoForUpdate) {
-
-        var MESSAGE_ABOUT_FREE_EVENT = 'бесплатно';
-
-        if (infoForUpdate) {
-
-            $scope.eventTitle = infoForUpdate.title;
-            $scope.eventDate = infoForUpdate.date;
-            $scope.price = $scope.is_free ? MESSAGE_ABOUT_FREE_EVENT :
-                           infoForUpdate.price;
-            $scope.city = infoForUpdate.city;
-
-
-        } else {
-
-            resetCurrentCardInfo();
-
-        }
-
-    }
-
     /**
      * Метод вызывается для добавления новых карт в $scope.cards.active.
-     * После добавления новых карт, метод случайным образом их перетасовывает.
+     * После добавления новых карт, метод случайным образом их перемешивает.
      */
     function updateActiveCards(newCards) {
 
-        $scope.cards.active = lodash.shuffle(lodash.concat($scope.cards.active, newCards));
+        var previousCards = $scope.cards.active || [];
+
+        $scope.cards.active = null;
+
+        // Обращаем внимание ангуляр на $scope.cards.active.
+        $scope.$digest();
+
+        $timeout(function () {
+
+            // Конкатенируем карты которые имелись с новыми и перетасовываем их.
+            $scope.cards.active = lodash.shuffle(lodash.concat(previousCards, newCards));
+
+        });
 
     }
 
     /**
-     * Сброс информации по карточки в значение по умолчанию.
-     * Это некий сигнал того, что информации для карточки нет.
+     * Метод проверки наличия новых карт для добавления в колоду активных.
+     * Метод опирается на проверку состояния переменной newCardsForActive.
      */
-    function resetCurrentCardInfo() {
+    function checkForNewCards() {
 
-        $scope.eventTitle = "untitled";
-        $scope.eventDate = "untitled";
-        $scope.price = "untitiled";
-        $scope.city = "untitled";
+        //Если есть новые карточки для добавления.
+        if (newCardsForActive.length) {
 
+            updateActiveCards(newCardsForActive);
+
+            // очищаем добавленные карты.
+            newCardsForActive = [];
+
+        }
     }
 
     /**
-     * Метод добавления новых карточек в wirpl.controller менеджером карточек.
+     * Метод для добавления новых карт менеджером карточек.
      */
     function pushCards(error, newCards) {
 
-        // TODO
-        // Не забыть про перезагрузку директивы при поступлении ПЕРВЫХ карт.
         if (!error) {
 
-            // Если в колоде active еще нет карт, то добавляем их сразу.
-            // В противном случае запоминаем новую порцию карт и сразу не добавляем,
-            // так как в данный момент пользователь просматривает карты.
-            if (!$scope.cards.active.length) {
+            // Если в колоде active нет карт (к примеру, приложение только запустили), то добавляем их сразу.
+            // В противном случае, запоминаем новую порцию карт и сразу НЕ добавляем,
+            // так как в данный момент пользователь еще просматривает карты.
+            if (!$scope.cards.active || !$scope.cards.active.length) {
 
-                initializeActiveCards(newCards);
+                updateActiveCards(newCards);
 
             } else {
 
@@ -169,35 +155,10 @@ function WirplController($scope, TDCardDelegate, $timeout, cardsManager) {
 
     }
 
-    /**
-     * Метод вызывать ОБЯЗАТЕЛЬНО при появлении карт для добавления в ПУСТУЮ колоду active
-     * (именно пустую. Т.е. это либо начало работы контроллера, либо пользователь пролистал
-     * ВСЕ карты в колоде active).
-     * Вся логика работы кода, которая представлена в данном методе, заключена
-     * в особенности работы директивы tdCards.
-     * Чтобы она применила стили анимации ко всем карточкам в active,
-     * ее необходимо ПЕРЕЗАГРУЗИТЬ. Делается это обнулением ссылки на active
-     * карты из scope.cards (см. на шаблон wirpl).
+	/**
+     * Метод инициализации менеджера карточек с целью оповещения его
+     * о нашей готовности принимать карточки для отображения.
      */
-    function initializeActiveCards(cards) {
-
-        // TODO
-        // Не забыть про перетасовку карт!
-
-        $scope.cards.active = null;
-
-        // Обращаем внимание ангуляр на $scope.cards.active.
-        $scope.$digest();
-
-        $timeout(function() {
-
-            $scope.cards.active = cards;
-
-            updateCurrentCardInfo($scope.cards.active[0]);
-
-        });
-    }
-
     function initializeCardManager() {
 
         cardsManager.registerPushCardsMethod(pushCards);
