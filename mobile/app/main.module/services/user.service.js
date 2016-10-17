@@ -15,6 +15,7 @@ function UserService (connection) {
 	function getUsers(success, error) {
 
 		connection.findRandomUser(success, error);
+
 	}
 
 }

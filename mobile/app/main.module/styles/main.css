@@ -129,12 +129,20 @@ td-card img {
     height: 80%;
 }
 
-.wirpl-tabs .tabs {
+.wirpl-tabs .tab-nav {
+    top: 0 !important;
     background-size: 0;
     padding-top: 10px;
 }
 
-.discard {
+.event-discard {
+    top: 5%;
+    bottom: inherit;
+}
+
+.human-discard {
+    border-radius: 5px 0 0 5px;
+    right: 10px;
     top: 80%;
     bottom: inherit;
 }
@@ -144,24 +152,23 @@ td-card img {
     height: 20%;
 }
 
-.info-name {
+.human-info-name {
     font-weight: bold;
-    padding: 0 15px;
+    padding: 10px;
     font-size: 1.4em;
-    top: 80%;
-    right: 5%;
-    position: absolute;
+}
+
+.event-info-name {
+    font-weight: bold;
+    padding: 10px 0 0 10px;
+    font-size: 1.4em;
 }
 
 .info-additional {
     font-weight: bold;
-    float: right;
     font-size: 0.8em;
-    top: 85%;
     color: #989898;
-    right: 5%;
-    position: absolute;
-    padding: 0 15px;
+    padding: 0 10px;
 }
 
 .footer-like-button {
@@ -173,8 +180,9 @@ td-card img {
 }
 
 .wirpl-footer {
+    background-size: 0;
     top: initial !important;
-    bottom: 0;
+    bottom: 0 !important;
     padding-top: 0 !important;
     margin-bottom: 10px;
 }
