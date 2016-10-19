@@ -18,18 +18,18 @@ var links = {
  * @author Skurishin Vladislav
  */
 function Connection ($http, config) {
-    
-    var that = {};
-    
-    that.findRandomUser = findRandomUser;
-    
-    return that;
-    
-    function findRandomUser (callback) {
-        
-        $http.get(config.buildUrl(links.findRandomUser))
-            .then(callback);
-        
-    }
-    
+
+	var that = {};
+
+	that.findRandomUser = findRandomUser;
+
+	return that;
+
+	function findRandomUser (success, error) {
+
+		$http.get(config.buildUrl(links.findRandomUser))
+			.then(success, error);
+
+	}
+
 }

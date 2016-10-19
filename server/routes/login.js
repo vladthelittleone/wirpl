@@ -8,8 +8,15 @@ module.exports = router;
 
 router.get('/vk', passport.authenticate('vk-login'));
 
-router.get('/vk/callback', passport.authenticate('vk-login'), (req, res, next) => {
+router.get('/vk/callback', passport.authenticate('vk-login', {
 
-	res.send(req.session.passport.user);
+	successRedirect: '/login/toapp'
+
+}));
+
+router.get('/toapp', function (req, res) {
+
+	res.send('');
+	res.end();
 
 });

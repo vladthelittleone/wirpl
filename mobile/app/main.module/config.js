@@ -1,13 +1,15 @@
 'use strict';
 
-MainConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
+MainConfig.$inject = ['$stateProvider', '$ionicConfigProvider'];
 
 module.exports = MainConfig;
 
 /**
  * Инициализация состояния результатов пользователя.
  */
-function MainConfig($stateProvider) {
+function MainConfig($stateProvider, $ionicConfigProvider) {
+
+	$ionicConfigProvider.tabs.position("top");
 
 	$stateProvider
 		.state('auth', {

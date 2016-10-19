@@ -22,13 +22,12 @@
                           - onClickTransitionOut is found in ionic.tdcards.js
                           - Animation can be customized by changing defaults
                         ************************* -->
-                        <div class="discard" ng-click="onClickTransitionOut(card)">{{card.head}}</div>
+                        <div class="human-discard">{{card.head}}</div>
                         <img ng-src="{{ card.image }}">
                     </div>
                     <div class="info-container">
-                        <div class="info-event-name">{{ card.title }}</div>
-                        <div class="info-event-data">{{card.body}}</div>
-                        <div class="info-event-additional">{{card.additional}}</div>
+                        <div class="human-info-name">{{card.userName}}</div>
+                        <div class="info-additional">{{card.universities[0].name}}</div>
                     </div>
                 </td-card>
             </td-cards>

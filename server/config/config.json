@@ -1,9 +1,9 @@
 {
-	"port": 3000,
+	"port": 8080,
 	"database": {
 		"uri":  "mongodb://localhost/wirpl",
 		"options": {
-			"server": {
+			"url": {
 				"socketOptions": {
 					"keepAlive": 1
 				}
@@ -25,7 +25,7 @@
 	"vkStrategySettings": {
 		"clientID":     "5643384",
 		"clientSecret": "ADL6MiBqWXJdtgBcqVlS",
-		"callbackURL":  "http://localhost:3000/login/vk/callback",
+		"callbackURL":  "http://localhost:8080/login/vk/callback",
 		"apiVersion": "5.17",
 		"scope": ["email"],
 		"profileFields": ["email", "city", "bdate", "sex", "city", "photo_max", "universities"]
