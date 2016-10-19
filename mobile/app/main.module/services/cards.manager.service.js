@@ -19,11 +19,11 @@
  * Created by iretd on 11.10.16.
  */
 
-CardsManager.$inject = ['kudagoEvents'];
+CardsManager.$inject = ['kudagoEvents', 'userService'];
 
 module.exports = CardsManager;
 
-function CardsManager(kudagoEvents) {
+function CardsManager(kudagoEvents, userService) {
 
     var unloadingCardsInfo = {};
     var packsOfCards = {};
@@ -68,18 +68,13 @@ function CardsManager(kudagoEvents) {
             intializeTypeCardsForManager();
 
             getNextCardsPack(kudagoEvents.cardsType, pushMethod);
+            getNextCardsPack(userService.cardsType, pushMethod);
 
-
-        } else {
-
-            // На случай, если забыли зарегистрировать pushMethod.
-            console.log('There is no push method! Initialize this one first.')
 
         }
 
     }
-
-
+    
     /**
      * Метод, который позволяет зарегистрировать тип карточек (индивидуальное значение
      * на уровне сервиса) и метод их загрузки.
@@ -182,10 +177,13 @@ function CardsManager(kudagoEvents) {
 
     /**
      * Инициализируем сервисы получения карточек.
+     * Под инициализацией понимается связывание типа карточек, с методом их выгрузки
+     * посредством соответствующего сервиса (по сути, нам важна только ссылка на метод выгрузки).
      */
     function intializeTypeCardsForManager() {
 
         addUnloadingCardsInfo(kudagoEvents.cardsType, kudagoEvents.requirePackEvents);
+        addUnloadingCardsInfo(userService.cardsType, userService.getUsers);
 
     }
 
