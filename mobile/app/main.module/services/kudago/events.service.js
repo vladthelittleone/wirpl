@@ -23,7 +23,7 @@ var eventsConfig = {
 
 // Тип карточек, который будет назначен КАЖДОЙ карте,
 // которая будет получена от этого сервиса.
-var cardsType = 'kudago.events';
+var cardsType = 'event';
 
 function EventsService() {
 

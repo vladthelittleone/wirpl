@@ -4,7 +4,7 @@ UserService.$inject = ['connection'];
 
 module.exports = UserService;
 
-var cardsType = "user";
+var cardsType = "human";
 
 // TODO число запрашиваемых пользователей с клиента.
 // TODO фидьтр с для запроса пользователей.
@@ -90,8 +90,8 @@ function UserService (connection) {
 
             // Определяем свойства для вывода карточки на экран.
             item['head'] = calculateUserAgeByDate(item.birthDate);
-            item['title'] = item.city;
-            item['additional'] = item.userName;
+            item['title'] = item.userName;
+            item['additional'] = item.universities[0] && item.universities[0].name;
 
         });
 
