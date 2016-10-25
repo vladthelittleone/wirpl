@@ -102,7 +102,7 @@ function EventsService() {
             item['type'] = cardsType;
 
             // Определяем свойства для вывода карточки на экран.
-            item['head'] = item.city;
+            item['head'] = item.location.name;
             item['title'] = item.short_title;
             item['body'] = item.is_free ? MESSAGE_ABOUT_FREE_EVENT :
                                           item.price;
