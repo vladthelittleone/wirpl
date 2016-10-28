@@ -107,9 +107,6 @@ function WirplController($scope, $timeout, cardsManager) {
 
         $scope.cards.active = null;
 
-        // Обращаем внимание ангуляр на $scope.cards.active.
-        $scope.$digest();
-
         $timeout(function () {
 
             // Конкатенируем карты которые имелись с новыми и перетасовываем их.

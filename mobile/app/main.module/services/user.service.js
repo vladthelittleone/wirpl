@@ -32,9 +32,14 @@ function UserService (connection) {
 
             var users = result.data;
 
-            wrapResults(users);
+            // Если юзеры есть.
+            if (users.length) {
 
-            callback(null, cardsType, users);
+                wrapResults(users);
+
+                callback(null, cardsType, users);
+                
+            }
 
         }
 

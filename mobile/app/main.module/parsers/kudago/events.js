@@ -44,7 +44,7 @@ var urls = {
 module.exports = Events();
 
 function Events() {
-    
+
     // Начальное значение номера страницы просмотра событий.
     var INIT_PAGE_NUMBER_VALUE = 1;
 
@@ -106,6 +106,7 @@ function Events() {
                                           'location,' +
                                           'price,' +
                                           'is_free,' +
+                                          'categories,' +
                                           'images',
                           // Просим kudago выслать более подробную информацию о location
                           // (по умолчанию там только поле slug).
