@@ -37,13 +37,13 @@ const MongoStore = require('connect-mongo/es5')(session);
 app.use(require('./middlewares/send-http-error'));
 
 app.use(session({
-					secret: config.get('session:secret'), // ABCDE242342342314123421.SHA256
-					key: config.get('session:key'),
-					resave: config.get('session:resave'),
-					saveUninitialized: config.get('session:saveUninitialized'),
-					cookie: config.get('session:cookie'),
-					store: new MongoStore({mongooseConnection: mongoose.connection})
-}));
+                    secret:            config.get('session:secret'), // ABCDE242342342314123421.SHA256
+                    key:               config.get('session:key'),
+                    resave:            config.get('session:resave'),
+                    saveUninitialized: config.get('session:saveUninitialized'),
+                    cookie:            config.get('session:cookie'),
+                    store:             new MongoStore({mongooseConnection: mongoose.connection})
+                }));
 
 // init passportJS
 app.use(passport.initialize());
@@ -55,7 +55,7 @@ require('./routes')(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-
+    
 	var err = new Error('Страница не найдена!');
 	err.status = 404;
 	next(err);
@@ -66,18 +66,18 @@ const HttpError = require('./error').HttpError;
 
 app.use(function (err, req, res, next) {
 
-	// Проверка на error/HttpError
-	if (typeof err == 'number') {
+    // Проверка на error/HttpError
+    if (typeof err == 'number') {
 
-		err = new HttpError(err);
+        err = new HttpError(err);
 
-	}
+    }
+    
+    if (app.get('env') === 'development') {
 
-	if (app.get('env') === 'development') {
+        logger.error(err);
 
-		logger.error(err);
-
-	}
+    }
 
 	// middlewares/sendHttpError
 	res.sendHttpError(err);
@@ -86,16 +86,16 @@ app.use(function (err, req, res, next) {
 
 if (app.get('env') === 'development') {
 
-	setInterval(function () {
+    setInterval(function () {
 
-		var heap = process.memoryUsage().heapUsed;
+                    var heap = process.memoryUsage().heapUsed;
 
-		maxHeap = maxHeap < heap ? heap : maxHeap;
+                    maxHeap = maxHeap < heap ? heap : maxHeap;
 
-		logger.info('Heap size: ' + heap + ', maximum heap size: ' + maxHeap);
+                    logger.info('Heap size: ' + heap + ', maximum heap size: ' + maxHeap);
 
-	},
-	10000);
+                },
+                10000);
 
 }
 

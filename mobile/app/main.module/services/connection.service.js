@@ -8,9 +8,9 @@ module.exports = Connection;
  * Ссылки на REST API
  */
 var links = {
-
-	findRandomUser: '/find/random',
-
+    
+    findRandomUser: '/find/random'
+    
 };
 
 /**
