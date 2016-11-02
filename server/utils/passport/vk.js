@@ -12,7 +12,7 @@ vk.login = new VKStrategy(config.get('vkStrategySettings'),
 
 	(accessToken, refreshToken, params, profile, next) => {
 
-			User.findOrCreateVKUser (params.email, profile, (err, user) => {
+		User.findOrCreateVKUser (params.email, profile, (err, user) => {
 
 				next (err, user);
 				

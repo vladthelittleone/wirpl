@@ -18,6 +18,9 @@ var schema = new Schema ({
 	userName: {
 		type: String
 	},
+	fullName: {
+		type: String
+	},
 	sex: {
 		type: Number
 	},
@@ -88,9 +91,9 @@ function findOrCreateVKUser (email, profile, callback) {
 				vkId: profile.id
 
 			}, {
-
+				fullName: profile.displayName,
 				email: email,
-				userName: profile.displayName,
+				userName: profile.name.givenName,
 				sex: response.sex,
 				photoUrl: response.photo_max,
 				smallPhotoUrl: response.photo,

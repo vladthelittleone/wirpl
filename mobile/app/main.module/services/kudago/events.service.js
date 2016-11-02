@@ -25,6 +25,8 @@ var eventsConfig = {
 // которая будет получена от этого сервиса.
 var cardsType = 'event';
 
+var categoryDictionary = require('./dictionary/categories');
+
 function EventsService() {
 
     var t = {};
@@ -76,6 +78,22 @@ function EventsService() {
     }
 
     /**
+     * Конвертация имен категорий посредством словаря.
+     * Парсер kudago присылает имена категорий на английском языке.
+     * Посредством словаря, осуществляем перевод на русский.
+     * @param categories
+     */
+    function convertCategoriesByDictionary(categories) {
+
+        categories.forEach(function (item, index, arr) {
+
+            arr[index] = categoryDictionary[item];
+
+        });
+
+    }
+
+    /**
      * Оборачиваем результаты дополнительными полями, которые преимущественно
      * будут исользоваться в шаблоне.
      * К примеру, представляем дату в строковом формате. Напрямую включаем через отдельное поле
@@ -100,6 +118,9 @@ function EventsService() {
             item['image'] = image;
 
             item['type'] = cardsType;
+
+            // Конвертируем имена категорий с английского на русский.
+            convertCategoriesByDictionary(item['categories']);
 
             // Определяем свойства для вывода карточки на экран.
             item['head'] = item.location.name;
