@@ -7,12 +7,13 @@ var moment = require('moment');
 var Schema = mongoose.Schema;
 
 var schema = new Schema({
+
     email:         {
 
         type: String
 
     },
-    userId:          {
+    userId:        {
 
         type:     Number,
         unique:   true,
@@ -20,6 +21,11 @@ var schema = new Schema({
 
     },
     userName:      {
+
+        type: String
+
+    },
+    fullName:      {
 
         type: String
 
@@ -60,6 +66,7 @@ var schema = new Schema({
         default: Date.now
 
     }
+    
 });
 
 schema.statics.findOrCreateVKUser = findOrCreateVKUser;
@@ -102,6 +109,7 @@ function findOrCreateVKUser(email, profile, callback) {
                         (callback) => {
 
                             var response = profile._json;
+                            var photos = response.crop_photo.photo;
 
                             User.findOneAndUpdate({
 
@@ -109,10 +117,11 @@ function findOrCreateVKUser(email, profile, callback) {
 
                                                   }, {
 
+                                                      fullName:      profile.displayName,
                                                       email:         email,
-                                                      userName:      profile.displayName,
+                                                      userName:      profile.name.givenName,
                                                       sex:           response.sex,
-                                                      photoUrl:      response.photo_max,
+                                                      photoUrl:      photos.photo_604 || photos.photo_807 || photos.photo_1280 || photos.photo_2560,
                                                       smallPhotoUrl: response.photo,
                                                       universities:  response.universities,
                                                       city:          response.city.title,

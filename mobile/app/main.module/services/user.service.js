@@ -94,9 +94,10 @@ function UserService (connection) {
             item['type'] = cardsType;
 
             // Определяем свойства для вывода карточки на экран.
-            item['head'] = calculateUserAgeByDate(item.birthDate);
+            item['age'] = calculateUserAgeByDate(item.birthDate);
             item['title'] = item.userName;
-            item['additional'] = item.universities[0] && item.universities[0].name;
+            item['additional'] = [];
+			item['additional'].push(item.universities[0] && item.universities[0].name);
 
         });
 
