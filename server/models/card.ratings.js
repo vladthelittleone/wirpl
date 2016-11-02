@@ -9,26 +9,26 @@ var Schema = mongoose.Schema;
 var schema = new Schema({
     idUser:   {
 
-        type:     mongoose.Schema.Types.ObjectId,
+        type:     Number,
         ref:      'User',
         required: true
 
     },
     idCard:   {
 
-        type:     mongoose.Schema.Types.Number,
+        type:     Number,
         required: true
 
     },
     typeCard: {
 
-        type:     mongoose.Schema.Types.String,
+        type:     String,
         required: true
 
     },
     isLike:   {
 
-        type:     mongoose.Schema.Types.Boolean,
+        type:     Boolean,
         required: true
 
     }
@@ -51,8 +51,7 @@ exports.CardRatings = mongoose.model('CardRatings', schema);
  * callback - callback :)
  */
 function rateCard(args) {
-
-
+    
     this.findOneAndUpdate({
 
                               idUser:   args.idUser,

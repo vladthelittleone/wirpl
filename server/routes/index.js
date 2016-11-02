@@ -7,8 +7,8 @@ const rate = require('./cards/rate');
 module.exports = function (app) {
 
 	app.use ('/login', login);
-	app.use ('/cards', rate);
 	app.use(require('../middlewares/check.authentication'));
+	app.use ('/cards', rate);
 	app.use ('/find', find);
 
 };

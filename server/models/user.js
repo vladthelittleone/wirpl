@@ -6,40 +6,60 @@ var moment = require('moment');
 
 var Schema = mongoose.Schema;
 
-var schema = new Schema ({
-	email: {
-		type: String
-	},
-	vkId: {
-		type: String,
-		unique: true,
-		required: true
-	},
-	userName: {
-		type: String
-	},
-	sex: {
-		type: Number
-	},
-	photoUrl: {
-		type: String
-	},
-	birthDate: {
-		type: Date
-	},
-	smallPhotoUrl: {
-		type: String
-	},
-	universities: {
-		type: Array
-	},
-	city: {
-		type: String
-	},
-	created: {
-		type: Date,
-		default: Date.now
-	}
+var schema = new Schema({
+    email:         {
+
+        type: String
+
+    },
+    userId:          {
+
+        type:     Number,
+        unique:   true,
+        required: true
+
+    },
+    userName:      {
+
+        type: String
+
+    },
+    sex:           {
+
+        type: Number
+
+    },
+    photoUrl:      {
+
+        type: String
+
+    },
+    birthDate:     {
+
+        type: Date
+
+    },
+    smallPhotoUrl: {
+
+        type: String
+
+    },
+    universities:  {
+
+        type: Array
+
+    },
+    city:          {
+
+        type: String
+
+    },
+    created:       {
+
+        type:    Date,
+        default: Date.now
+
+    }
 });
 
 schema.statics.findOrCreateVKUser = findOrCreateVKUser;
@@ -49,23 +69,23 @@ exports.User = mongoose.model('User', schema);
 
 function getUsers(searchParam, callback) {
 
-	var User = this;
+    var User = this;
 
-	async.waterfall([
+    async.waterfall([
 
-		(callback) => {
+                        (callback) => {
 
-			User.find(searchParam, callback);
+                            User.find(searchParam, callback);
 
-		}, (users, callback) => {
+                        }, (users, callback) => {
 
-			let error = users.length ? null :
-										"Can't find users.";
+            let error = users.length ? null :
+                        "Can't find users.";
 
-			callback(error, users);
+            callback(error, users);
 
-			
-		}], callback);
+
+        }], callback);
 }
 
 /**
@@ -73,38 +93,38 @@ function getUsers(searchParam, callback) {
  * если пользователь не найдет функция создает нового пользователя
  * в базе
  */
-function findOrCreateVKUser (email, profile, callback) {
+function findOrCreateVKUser(email, profile, callback) {
 
-	var User = this;
+    var User = this;
 
-	async.waterfall([
+    async.waterfall([
 
-		(callback) => {
+                        (callback) => {
 
-			var response = profile._json;
+                            var response = profile._json;
 
-			User.findOneAndUpdate({
+                            User.findOneAndUpdate({
 
-				vkId: profile.id
+                                                      userId: profile.id
 
-			}, {
+                                                  }, {
 
-				email: email,
-				userName: profile.displayName,
-				sex: response.sex,
-				photoUrl: response.photo_max,
-				smallPhotoUrl: response.photo,
-				universities: response.universities,
-				city: response.city.title,
-				birthDate: moment(response.bdate, "DD.MM.YYYY")
+                                                      email:         email,
+                                                      userName:      profile.displayName,
+                                                      sex:           response.sex,
+                                                      photoUrl:      response.photo_max,
+                                                      smallPhotoUrl: response.photo,
+                                                      universities:  response.universities,
+                                                      city:          response.city.title,
+                                                      birthDate:     moment(response.bdate, "DD.MM.YYYY")
 
-			}, {
+                                                  }, {
 
-				upsert: true,
-				new: true
+                                                      upsert: true,
+                                                      new:    true
 
-			}, callback);
+                                                  }, callback);
 
-		}], callback);
+                        }], callback);
 
 }

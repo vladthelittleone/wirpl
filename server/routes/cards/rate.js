@@ -7,7 +7,6 @@ var lodash = require('lodash');
 
 var HttpError = require('../../error').HttpError;
 
-
 var CardRatingsModel = require('../../models/card.ratings').CardRatings;
 
 module.exports = router;
@@ -22,9 +21,9 @@ module.exports = router;
  */
 router.post('/rate', (req, res, next) => {
 
-    var args = {
+    let args = {
 
-        idUser:   req.body.idUser,
+        idUser:   req.user.userId,
         idCard:   req.body.idCard,
         typeCard: req.body.typeCard,
         isLike:   req.body.isLike,
@@ -32,7 +31,9 @@ router.post('/rate', (req, res, next) => {
 
     };
 
-    if (!lodash.isNil(args.idCard) && args.typeCard) {
+    // Приступаем к обработке запроса ТОЛЬКО в случае корректно заданных полей:
+    // idCard, typeCard, isLike.
+    if (!lodash.isNil(args.idCard) && args.typeCard && args.isLike) {
 
         CardRatingsModel.rateCard(args);
 
