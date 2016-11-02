@@ -106,7 +106,9 @@ function EventsService() {
             item['title'] = item.short_title;
             item['body'] = item.is_free ? MESSAGE_ABOUT_FREE_EVENT :
                                           item.price;
-            item['additional'] = dateOfEvent.toLocaleString();
+            item['additional'] = [];
+            item['additional'].push(item.categories.toString());
+            item['additional'].push(dateOfEvent.toLocaleString());
 
         });
 

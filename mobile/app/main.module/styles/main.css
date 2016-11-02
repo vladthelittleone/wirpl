@@ -135,15 +135,8 @@ td-card img {
     padding-top: 10px;
 }
 
-.event-discard {
-    top: 5%;
-    bottom: inherit;
-}
-
-.human-discard {
-    border-radius: 5px 0 0 5px;
-    right: 10px;
-    top: 80%;
+.discard {
+    top: 50px;
     bottom: inherit;
 }
 
@@ -152,16 +145,13 @@ td-card img {
     height: 20%;
 }
 
-.human-info-name {
-    font-weight: bold;
-    padding: 10px;
-    font-size: 1.4em;
-}
-
-.event-info-name {
+.info-name {
     font-weight: bold;
     padding: 10px 0 0 10px;
     font-size: 1.4em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
 }
 
 .info-additional {
@@ -169,6 +159,9 @@ td-card img {
     font-size: 0.8em;
     color: #989898;
     padding: 0 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
 }
 
 .footer-like-button {
