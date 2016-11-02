@@ -85,6 +85,9 @@ function findOrCreateVKUser (email, profile, callback) {
 		(callback) => {
 
 			var response = profile._json;
+			var photos = response.crop_photo.photo;
+
+			console.log(response.crop_photo);
 
 			User.findOneAndUpdate({
 
@@ -95,7 +98,7 @@ function findOrCreateVKUser (email, profile, callback) {
 				email: email,
 				userName: profile.name.givenName,
 				sex: response.sex,
-				photoUrl: response.photo_max,
+				photoUrl: photos.photo_604 || photos.photo_807 || photos.photo_1280 || photos.photo_2560,
 				smallPhotoUrl: response.photo,
 				universities: response.universities,
 				city: response.city.title,

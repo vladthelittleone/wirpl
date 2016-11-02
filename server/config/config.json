@@ -28,7 +28,7 @@
 		"callbackURL":  "http://localhost:8080/login/vk/callback",
 		"apiVersion": "5.17",
 		"scope": ["email"],
-		"profileFields": ["email", "city", "bdate", "sex", "city", "photo_max", "universities"]
+		"profileFields": ["email", "city", "bdate", "sex", "city", "crop_photo", "universities"]
 	},
 	"countOfRandomUsers": 10
 }
