@@ -10,6 +10,7 @@ var FindHelp = require ('../utils/find.help.js')();
  * если sex = 2 возвращает только мужчин
  * если sex = 0 возвращает всех
  */
+
 const MAN = 2;
 const WOMAN = 1;
 const ALL = 0;

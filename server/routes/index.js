@@ -2,13 +2,13 @@
 
 const login = require ('./login');
 const find = require ('./find');
-const rating = require ('./rating.js');
+const rate = require('./cards/rate');
 
 module.exports = function (app) {
 
 	app.use ('/login', login);
-	// app.use(require('../middlewares/check.authentication'));
-	app.use ('/rating', rating);
+	app.use ('/cards', rate);
+	app.use(require('../middlewares/check.authentication'));
 	app.use ('/find', find);
 
 };
