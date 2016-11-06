@@ -33,7 +33,9 @@
     "mongodb": "^2.1.7",
     "mongoose": "^4.4.5",
     "connect-mongo": "^1.1.0",
-    "moment": "^2.15.1"
+    "moment": "^2.15.1",
+    "request": "^2.75.0",
+    "validator": "^6.0.0"
   },
   "devDependencies": {
     "eslint": "^3.1.1",
@@ -41,11 +43,11 @@
     "gulp": "^3.9.0",
     "gulp-eslint": "^2.0.0",
     "gulp-exclude-gitignore": "^1.0.0",
-    "gulp-line-ending-corrector": "^1.0.1",
     "gulp-istanbul": "^1.0.0",
+    "gulp-line-ending-corrector": "^1.0.1",
     "gulp-mocha": "^2.0.0",
-    "gulp-plumber": "^1.0.0",
-    "gulp-nsp": "^2.1.0"
+    "gulp-nsp": "^2.1.0",
+    "gulp-plumber": "^1.0.0"
   },
   "eslintConfig": {
     "extends": "xo-space",

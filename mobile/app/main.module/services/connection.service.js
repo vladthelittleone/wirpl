@@ -8,9 +8,9 @@ module.exports = Connection;
  * Ссылки на REST API
  */
 var links = {
-
-	findRandomUser: '/find/random',
-
+    
+    findRandomUser: '/find/random'
+    
 };
 
 /**
@@ -25,10 +25,10 @@ function Connection ($http, config) {
 
 	return that;
 
-	function findRandomUser (callback) {
+	function findRandomUser (success, error) {
 
 		$http.get(config.buildUrl(links.findRandomUser))
-			.then(callback);
+			.then(success, error);
 
 	}
 

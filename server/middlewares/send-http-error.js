@@ -2,6 +2,8 @@
  * @since 03.02.16
  * @author Skurishin Vladislav
  */
+var log = require('../utils/log');
+
 module.exports = function (req, res, next) {
 
 	res.sendHttpError = function (error) {

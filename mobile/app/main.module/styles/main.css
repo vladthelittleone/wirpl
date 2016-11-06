@@ -130,14 +130,15 @@ td-card img {
   height: 80%;
 }
 
-.wirpl-tabs .tabs {
-  background-size: 0;
-  padding-top: 10px;
+.wirpl-tabs .tab-nav {
+    top: 0 !important;
+    background-size: 0;
+    padding-top: 10px;
 }
 
 .discard {
-  top: 80%;
-  bottom: inherit;
+    top: 50px;
+    bottom: inherit;
 }
 
 .info-container {
@@ -146,23 +147,22 @@ td-card img {
 }
 
 .info-name {
-  font-weight: bold;
-  padding: 0 15px;
-  font-size: 1.4em;
-  top: 80%;
-  right: 5%;
-  position: absolute;
+    font-weight: bold;
+    padding: 10px 0 0 10px;
+    font-size: 1.4em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
 }
 
 .info-additional {
-  font-weight: bold;
-  float: right;
-  font-size: 0.8em;
-  top: 85%;
-  color: #989898;
-  right: 5%;
-  position: absolute;
-  padding: 0 15px;
+    font-weight: bold;
+    font-size: 0.8em;
+    color: #989898;
+    padding: 0 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
 }
 
 .footer-like-button {
@@ -174,10 +174,11 @@ td-card img {
 }
 
 .wirpl-footer {
-  top: initial !important;
-  bottom: 0;
-  padding-top: 0 !important;
-  margin-bottom: 10px;
+    background-size: 0;
+    top: initial !important;
+    bottom: 0 !important;
+    padding-top: 0 !important;
+    margin-bottom: 10px;
 }
 
 .tab-item .footer-like-button,
