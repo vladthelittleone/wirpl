@@ -1,7 +1,7 @@
 /**
  * Created by vladthelittleone on 25.09.16.
  */
-WirplController.$inject = ['$scope', '$timeout', 'cardsManager'];
+WirplController.$inject = ['$scope', '$timeout', 'cardsManager', 'connection'];
 
 var lodash = require('lodash');
 
@@ -22,7 +22,7 @@ module.exports = WirplController;
  * Все перечисленные поля определяются сервисом каждого типа карточек самостоятельно.
  * Но это контроллера уже не касается :)
  */
-function WirplController($scope, $timeout, cardsManager) {
+function WirplController($scope, $timeout, cardsManager, connection) {
 
     // Очередь карточек на добавление в колоду активных.
     var newCards = [];
@@ -30,6 +30,9 @@ function WirplController($scope, $timeout, cardsManager) {
     initializeScope();
 
     initializeCardManager();
+
+    var LIKE = true;
+    var DISLIKE = false;
 
     /**
      * Метод инициализации $scope необходимыми свойствами
@@ -67,6 +70,8 @@ function WirplController($scope, $timeout, cardsManager) {
 
             var card = $scope.cards.active[index];
 
+            connection.rateCard(card.idCard, card.typeCard, DISLIKE);
+
             $scope.cards.disliked.push(card);
 
         };
@@ -75,6 +80,8 @@ function WirplController($scope, $timeout, cardsManager) {
         $scope.cardSwipedRight = function (index) {
 
             var card = $scope.cards.active[index];
+
+            connection.rateCard(card.idCard, card.typeCard, LIKE);
 
             $scope.cards.liked.push(card);
 

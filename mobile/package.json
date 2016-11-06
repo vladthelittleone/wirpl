@@ -47,6 +47,8 @@
     "lodash": "^4.3.0",
     "main-bower-files": "^2.9.0",
     "minimist": "^1.2.0",
+    "moment": "^2.15.2",
+    "moment-range": "^2.2.0",
     "phantomjs-prebuilt": "^2.1.4",
     "plist": "^2.0.0",
     "proxy-middleware": "^0.15.0",

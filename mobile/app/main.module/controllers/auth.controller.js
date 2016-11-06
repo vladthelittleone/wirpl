@@ -35,13 +35,13 @@ function AuthController ($scope, $rootScope, $state, $cordovaInAppBrowser, confi
 
 		$state.go('main.wirpl');
 
-		// var options = {
-		// 	location: 'no',
-		// 	clearcache: 'yes',
-		// 	toolbar: 'yes'
-		// };
-		//
-		// $cordovaInAppBrowser.open(url, '_blank', options);
+		var options = {
+			location: 'no',
+			clearcache: 'yes',
+			toolbar: 'yes'
+		};
+
+		$cordovaInAppBrowser.open(url, '_blank', options);
 
 	}
 

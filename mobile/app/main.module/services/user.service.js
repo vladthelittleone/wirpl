@@ -2,6 +2,12 @@
 
 UserService.$inject = ['connection'];
 
+// Иниициализация библиотеки moment.
+// Результатом require('moment-range') является определение
+// необходимых объектов-прототипов. Так что это не есть описка :)
+var moment = require('moment');
+require('moment-range');
+
 module.exports = UserService;
 
 var cardsType = "human";
@@ -38,7 +44,7 @@ function UserService (connection) {
                 wrapResults(users);
 
                 callback(null, cardsType, users);
-                
+
             }
 
         }
@@ -49,34 +55,6 @@ function UserService (connection) {
         }
 
 	}
-
-
-	/**
-     * Метод расчета возраста пользователя по его дате рождения.
-     */
-    function calculateUserAgeByDate(dateString) {
-
-        var now = new Date();
-        var birthDate = new Date(dateString);
-
-        var age = now.getFullYear() - birthDate.getFullYear();
-
-        var m = now.getMonth() - birthDate.getMonth();
-
-        var isBirthdayWillBeInCurrentMonth = m === 0 && now.getDate() < birthDate.getDate();
-        var isBirthdayWillBeInNextMonths = m < 0 || m === 0 && now.getDate() < birthDate.getDate();
-
-        // Так как в возрасте у нас разница между годами, то если день рождения
-        // в следующих месяцах (т.е. НЕ СЕГОДНЯ и еще не было), то отнимаем от возраста единичку.
-        if (isBirthdayWillBeInNextMonths) {
-
-            age--;
-
-        }
-
-        return age;
-
-    }
 
     /**
      * Оборачиваем результаты дополнительными полями, которые преимущественно
@@ -94,10 +72,12 @@ function UserService (connection) {
             item['type'] = cardsType;
 
             // Определяем свойства для вывода карточки на экран.
-            item['age'] = calculateUserAgeByDate(item.birthDate);
             item['title'] = item.userName;
             item['additional'] = [];
 			item['additional'].push(item.universities[0] && item.universities[0].name);
+
+            // Определяем возраст человека (с сервера приходит только дата его рождения).
+            item['age'] = moment.range(item.birthDate, moment()).diff('years');
 
         });
 

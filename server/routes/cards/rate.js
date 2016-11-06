@@ -60,6 +60,7 @@ router.post('/rate', (req, res, next) => {
         }
 
         res.sendStatus(200);
+
     };
 
 });
@@ -93,7 +94,6 @@ router.get('/rate', (req, res, next) => {
 
     /**
      * Метод обработки окончания выставления рейтинга пользователем
-     * @param error
      */
     function prepareGetCardsResult(error, cards) {
 
