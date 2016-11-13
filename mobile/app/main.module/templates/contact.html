@@ -1,18 +1,16 @@
-<ion-view hide-nav-bar="true">
+<ion-view class="contact-view" hide-nav-bar="true">
   <ion-content>
 
-      <ion-list class="contact-list" can-swipe="true">
+    <ion-list>
 
-        <ion-item ng-repeat="p in people">
-          <div class="contact-img-container">
-            <img src="{{p.image}}" class="img-contact"/>
-          </div>
-          <div class="contact-description-container">
-            <h2>{{p.name}}</h2>
-          </div>
-        </ion-item>
+      <ion-item  class="item item-avatar" ng-click="modal.show()"
+         ng-repeat="p in people">
+        <img ng-src="{{p.image}}" >
+        <h2>{{p.name}}</h2>
+        <p>Back off, man. I'm a scientist.</p>
+      </ion-item >
 
-      </ion-list>
+    </ion-list>
   </ion-content>
 
 </ion-view>

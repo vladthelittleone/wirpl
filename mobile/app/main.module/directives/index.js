@@ -6,3 +6,5 @@
  * Подключение директив.
  */
 var app = angular.module('main.module');
+
+app.directive("input", require('./input.directive'));
