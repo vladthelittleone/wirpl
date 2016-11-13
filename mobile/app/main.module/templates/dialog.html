@@ -1,9 +1,12 @@
 <ion-modal-view class="messaging-view">
     <ion-header-bar class="dialog-header">
         <button class="button"
-                ng-click="modal.hide()">Назад
+                ng-click="modal.hide()"><span class="icon ion-arrow-left-b red"></span>
         </button>
         <h1 class="title">Влад</h1>
+        <button class="button">
+            <img src="http://c4.staticflickr.com/4/3924/18886530069_840bc7d2a5_n.jpg">
+        </button>
     </ion-header-bar>
     <ion-content class="content-stable"
                  on-swipe-left="hideTime = false"
@@ -29,7 +32,7 @@
             <input type="text" placeholder="Введите сообщение" on-return="sendMessage(); closeKeyboard()"
                    ng-model="data.message" on-focus="inputUp()" on-blur="inputDown()"/>
         </label>
-        <button class="button button-clear" ng-click="sendMessage()">
+        <button class="button button-clear red" ng-click="sendMessage()">
             Отправить
         </button>
     </ion-footer-bar>

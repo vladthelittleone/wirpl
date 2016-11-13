@@ -130,6 +130,9 @@ td-card img {
 }
 
 .wirpl-tabs .tab-nav {
+    height: 59px;
+    padding-top: 4px;
+    border-bottom: 1px solid #ddd !important;
     top: 0 !important;
     background-size: 0;
 }
@@ -307,7 +310,7 @@ td-card img {
 
 .dialog-header {
     background: #f8f8f8;
-    height: 49px;
+    height: 59px;
     border-bottom: 1px solid #ddd !important;
 }
 
@@ -343,4 +346,22 @@ td-card img {
 .button.active, .button.activated {
     border-color: transparent;
     background-color: #e5e5e5;
+}
+
+.red {
+    color: #DE5151 !important;
+}
+
+.dialog-header img {
+    height: 100%;
+    border-radius: 50px;
+}
+
+.dialog-header .title {
+    height: 59px;
+    padding-top: 7px;
+}
+
+.messaging-view .has-header {
+    top: 59px;
 }
